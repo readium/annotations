@@ -33,7 +33,7 @@ This document defines a profile of the W3C Annotation Data Model by defining a s
 This document defines the following annotation properties: 
 
 | Name | Description | Format | Required? |
-| ---- | ----------- | ------ |
+| ---- | ----------- | ------ | --------- |
 | `@context`| The context that determines the meaning of the JSON as an Annotation. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
 | `id` | The identity of the annotation. A uuid formatted as a URN is recommended. | IRI | Yes |
 | `type` | The RDF structure type. It MUST be “Annotation”. | string | Yes |
@@ -54,10 +54,8 @@ Sample 1: Core structure of a Readium annotation
   "created": "2023-10-14T15:13:28Z",
   "modified": "2024-01-29T09:00:00Z",
   "target": {
-…
    },
   "body": {
-…
   }
 }
 ```
@@ -69,7 +67,7 @@ The target of an annotation associates the annotation to a specific segment of a
 This document defines three target sub-properties: 
 
 | Name | Description | Format | Required? |
-| ---- | ----------- | ------ |
+| ---- | ----------- | ------ | --------- |
 | `source`| The identity of the target resource. | IRI | Yes |
 | `selector`| The segment of the target resource that is annotated.  | Array of Selector objects | Yes |
 | `meta`| Indications that help locate the selector in the resource. | Meta | No |
@@ -87,17 +85,14 @@ Sample 2: the source of the annotation is the relative URL identifying an HTML d
 ```json
 {
   "@context": "http://www.w3.org/ns/anno.jsonld",
-  …
   "type": "Annotation",
   "target": {
-"source": "OEBPS/text/chapter1.html",
-"selector": [
-…
-],
-"meta": {
-…	
-}
-   }
+    "source": "OEBPS/text/chapter1.html",
+    "selector": [
+    ],
+    "meta": {
+    }
+  }
 }
 ```
 
@@ -162,18 +157,18 @@ Sample 3: A TextQuoteSelector contains the annotated text segment, a segment bef
 
 A FragmentSelector (https://www.w3.org/TR/annotation-model/#fragment-selector) MUST conform to a specific type; the fragment type is indicated by the conformsTo property and the value property gives the fragment value.
 
-Sample 4: A couple of FragmentSelectors - HTML, EPUB CFI - in an EPUB:
+Sample 4: A couple of FragmentSelectors in an EPUB; the first selector is an idref, the second is an EPUB CFI:
 
 ```json
 "selector": [
   {
   "type": "FragmentSelector",	 
-    "conformsTo": "http://tools.ietf.org/rfc/rfc3236",
-  "value": "footnote1" # ref to an element with such id
+  "conformsTo": "http://tools.ietf.org/rfc/rfc3236",
+  "value": "footnote1"
   },
   {
   "type": "FragmentSelector",	 
-    "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+  "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
   "value": "epubcfi(/6/4!/4[body01]/10[para05]/3:/10[para05]/10)"
   }
 ]
@@ -187,7 +182,7 @@ Sample 5: A PDF FragmentSelector:
 "selector": [
   {
   "type": "FragmentSelector",	 
-    "conformsTo": "http://tools.ietf.org/rfc/rfc3778",
+  "conformsTo": "http://tools.ietf.org/rfc/rfc3778",
   "value": "page=10&viewrect=50,50,650,480" 
   }
 ]
@@ -199,7 +194,7 @@ Sample 6: A Divina Rectangular Media FragmentSelector.
 "selector": [
   {
   "type": "FragmentSelector",	 
-    "conformsTo": "http://www.w3.org/TR/media-frags/",
+  "conformsTo": "http://www.w3.org/TR/media-frags/",
   "value": "xywh=50,50,650,480" 
   }
 ]
@@ -211,7 +206,7 @@ Sample 7: An Audiobook Temporal Media FragmentSelector:
 "selector": [
   {
   "type": "FragmentSelector",	 
-    "conformsTo": "http://www.w3.org/TR/media-frags/",
+  "conformsTo": "http://www.w3.org/TR/media-frags/",
   "value": "t=30,60" 
   }
 ]
@@ -232,7 +227,7 @@ Sample 8: A DomRangeSelector:
   "startOffset": 1066,
   "endContainerElementCssSelector": ".calibre_3",
   "endContainerChildTextNodeIndex": 0,
-  "endOffset: 1095
+  "endOffset": 1095
   }
 ]
 ```
@@ -259,7 +254,7 @@ Meta information MAY be added to an annotation as “breadcrumbs”,  to ease th
 The meta property contains: 
 
 | Name | Description | Format | Required? |
-| ---- | ----------- | ------ |
+| ---- | ----------- | ------ | --------- |
 | `headings`| Ancestor headings of the annotation. | Array of Heading objects | No |
 | `page`| Page of the publication containing the annotation. It may be either a synthetic page or a print equivalent. It is essentially a visual indicator. | string | No |
 
@@ -268,7 +263,7 @@ The meta property contains:
 The Headings object contains:
 
 | Name | Description | Format | Required? |
-| ---- | ----------- | ------ |
+| ---- | ----------- | ------ | --------- |
 | `level`| Heading level. | number | No |
 | `txt`| Heading title. | string | No |
 
@@ -277,28 +272,25 @@ Sample 10: Meta information contains ancestor headings and a page number:
 ```json
 {
   "@context": "http://www.w3.org/ns/anno.jsonld",
-  …
   "type": "Annotation",
   "target": {
-"source": …
-"meta": {
-"headings": [
-{
-"level": 1,
-"txt": "Section 11",
-},
-{
-"level": 2,
-"txt": "Sub Section 1",
-}
-],
-"page": "XI",
-    	
-},
-"selector": [
-…
-]
-   }
+    "source": "OEBPS/text/chapter11.html",
+    "meta": {
+      "headings": [
+        {
+        "level": 1,
+        "txt": "Section 11",
+        },
+        {
+        "level": 2,
+        "txt": "Sub Section 1",
+        }
+      ],
+      "page": "XI"       
+    },
+    "selector": [
+    ]
+  }
 }
 ```
 
@@ -309,7 +301,7 @@ The body of an annotation contains plain text, style, and tags.
 The body property contains: 
 
 | Name | Description | Format | Required? |
-| ---- | ----------- | ------ |
+| ---- | ----------- | ------ | --------- |
 | `type`| The body type. It MUST be “TextualBody”. | string | Yes |
 | `value`| The textual content of the annotation. | string | Yes |
 | `color`| The recommended colour of the annotation. | [CSS Color Module Level 3](https://www.w3.org/TR/css-color-3/) | No |
@@ -329,10 +321,10 @@ Sample 11: An annotation Body.
   "body": {
     "type" : "TextualBody",
     "value" : "j'adore !",
-    "tags" : ["teacher"],    # optional
-    "color" : "#01E3F6",     # optional
-    "language" : "fr"        # optional
-    "textDirection" : "ltr", # optional
+    "tags" : ["teacher"],   
+    "color" : "#01E3F6",
+    "language" : "fr",
+    "textDirection" : "ltr"
   },
 …
 }
@@ -347,7 +339,7 @@ Note: the AnnotationCollection defined by the W3C does not provide an adequate s
 The AnnotationSet object contains: 
 
 | Name | Description | Format | Required? |
-| ---- | ----------- | ------ |
+| ---- | ----------- | ------ | --------- |
 | `@context`| The context that determines the meaning of the JSON as an annotation set. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
 | `id` | The identity of the annotation set. A uuid formatted as a URN is recommended. | IRI | Yes |
 | `type` | The RDF structure type. It MUST be “AnnotationSet”. | string | Yes |
@@ -362,7 +354,7 @@ The AnnotationSet object contains:
   The About object contains information relative to the publication. Such metadata in intended to help associating an annotation set to a publication: 
 
 | Name | Description | Format | Required? |
-| ---- | ----------- | ------ |
+| ---- | ----------- | ------ | --------- |
 | `identifier`| Publication identifiers. An ISBN is preferred.  | Array of strings | No |
 | `title`| The title of the publication. | string | No |
 | `format`| The media type of the publication. | string | No |
@@ -384,8 +376,8 @@ Sample 12: An AnnotationSet containing one annotation.
   "title": "Annotations Mme Prof, La Peste, cours 1ere B",
   "about": {
      "dc:identifier": [
-"urn:isbn:1234567890",
-     		 "...",
+        "urn:isbn:1234567890",
+     		"...",
      ],
      "dc:format": "application/epub+zip",
      "dc:title": "Alice in Wonderland",
@@ -393,19 +385,17 @@ Sample 12: An AnnotationSet containing one annotation.
      "dc:creator": "Anne O'Tater",
      "dc:date": "1865"
   }
-  "items": [     # list of annotations
-{
-  	"@context": "http://www.w3.org/ns/anno.jsonld",
-  	"id": "urn:uuid:123-123-123-123",
-  	"type": "Annotation",
-  	"target": {
-…
-   	},
-  	"body": {
-…
-  		}
-}
-   ]
+  "items": [
+    {
+      "@context": "http://www.w3.org/ns/anno.jsonld",
+      "id": "urn:uuid:123-123-123-123",
+      "type": "Annotation",
+      "target": {
+      },
+      "body": {
+      }
+    }
+  ]
 }
 ```
 
@@ -440,21 +430,19 @@ Sample 13: A Readium Web Publication Manifest containing a link to an annotation
 {
   "@context": "https://readium.org/webpub-manifest/context.jsonld",
   "metadata": {
-…
   },
   "links": [
     { 
-	"rel": "self", 
-	"href": "http://example.com/manifest.json", 
-	"type": "application/webpub+json"}
-   },
-   {
-     "rel": "annotations", 
-	"href": "https://example.com/annotations.json", 
-	"type": "application/rd-annotations+json"}
-   }
-  ],
-   …
+      "rel": "self", 
+      "href": "http://example.com/manifest.json", 
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "annotations", 
+      "href": "https://example.com/annotations.json", 
+      "type": "application/rd-annotations+json"
+    }
+  ]
 }
 ```
 
