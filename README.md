@@ -143,14 +143,16 @@ Note: white spaces present in the source document are preserved in the “prefix
 Sample 3: A TextQuoteSelector contains the annotated text segment, a segment before and a segment after: 
 
 ```json
-"selector": [
-  {
-  "type": "TextQuoteSelector",
-  "exact": "Combien de fois \n\n    ne m’avait-il",
-  "prefix": "trouver quelqu’un    \n  \t\t    comme vous. ",
-  "suffix": " pas \n\n      reproché de travailler ma"
-  }
-]
+{
+  "selector": [
+    {
+    "type": "TextQuoteSelector",
+    "exact": "Combien de fois \n\n    ne m’avait-il",
+    "prefix": "trouver quelqu’un    \n  \t\t    comme vous. ",
+    "suffix": " pas \n\n      reproché de travailler ma"
+    }
+  ]
+}
 ```
 
 ##### 1.2.2.2. FragmentSelector
@@ -160,18 +162,20 @@ A FragmentSelector (https://www.w3.org/TR/annotation-model/#fragment-selector) M
 Sample 4: A couple of FragmentSelectors in an EPUB; the first selector is an idref, the second is an EPUB CFI:
 
 ```json
-"selector": [
-  {
-  "type": "FragmentSelector",	 
-  "conformsTo": "http://tools.ietf.org/rfc/rfc3236",
-  "value": "footnote1"
-  },
-  {
-  "type": "FragmentSelector",	 
-  "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-  "value": "epubcfi(/6/4!/4[body01]/10[para05]/3:/10[para05]/10)"
-  }
-]
+{
+  "selector": [
+    {
+    "type": "FragmentSelector",	 
+    "conformsTo": "http://tools.ietf.org/rfc/rfc3236",
+    "value": "footnote1"
+    },
+    {
+    "type": "FragmentSelector",	 
+    "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+    "value": "epubcfi(/6/4!/4[body01]/10[para05]/3:/10[para05]/10)"
+    }
+  ]
+}
 ```
 
 Note about EPUB CFI selectors: both the left-hand part (resource location in the publication) and the right-hand part (location of the annotation in the resource) are present in the selector. 
@@ -179,37 +183,43 @@ Note about EPUB CFI selectors: both the left-hand part (resource location in the
 Sample 5: A PDF FragmentSelector:
 
 ```json
-"selector": [
-  {
-  "type": "FragmentSelector",	 
-  "conformsTo": "http://tools.ietf.org/rfc/rfc3778",
-  "value": "page=10&viewrect=50,50,650,480" 
-  }
-]
+{
+  "selector": [
+    {
+    "type": "FragmentSelector",	 
+    "conformsTo": "http://tools.ietf.org/rfc/rfc3778",
+    "value": "page=10&viewrect=50,50,650,480" 
+    }
+  ]
+}
 ```
 
 Sample 6: A Divina Rectangular Media FragmentSelector.
 
 ```json
-"selector": [
-  {
-  "type": "FragmentSelector",	 
-  "conformsTo": "http://www.w3.org/TR/media-frags/",
-  "value": "xywh=50,50,650,480" 
-  }
-]
+{
+  "selector": [
+    {
+    "type": "FragmentSelector",	 
+    "conformsTo": "http://www.w3.org/TR/media-frags/",
+    "value": "xywh=50,50,650,480" 
+    }
+  ]
+}
 ```
 
 Sample 7: An Audiobook Temporal Media FragmentSelector:
 
 ```json
-"selector": [
-  {
-  "type": "FragmentSelector",	 
-  "conformsTo": "http://www.w3.org/TR/media-frags/",
-  "value": "t=30,60" 
-  }
-]
+{
+  "selector": [
+    {
+    "type": "FragmentSelector",	 
+    "conformsTo": "http://www.w3.org/TR/media-frags/",
+    "value": "t=30,60" 
+    }
+  ]
+}
 ```
 
 ##### 1.2.2.3. DomRangeSelector
@@ -219,17 +229,19 @@ A DomRangeSelector, not defined in the W3C Annotation Model, contains start and 
 Sample 8: A DomRangeSelector:
 
 ```json
-"selector": [
-  {
-  "type": "DomRangeSelector",
-  "startContainerElementCssSelector": ".calibre_3",
-  "startContainerChildTextNodeIndex": 0,
-  "startOffset": 1066,
-  "endContainerElementCssSelector": ".calibre_3",
-  "endContainerChildTextNodeIndex": 0,
-  "endOffset": 1095
-  }
-]
+{
+  "selector": [
+    {
+    "type": "DomRangeSelector",
+    "startContainerElementCssSelector": ".calibre_3",
+    "startContainerChildTextNodeIndex": 0,
+    "startOffset": 1066,
+    "endContainerElementCssSelector": ".calibre_3",
+    "endContainerChildTextNodeIndex": 0,
+    "endOffset": 1095
+    }
+  ]
+}
 ```
 
 ##### 1.2.2.4. ProgressionSelector
@@ -239,12 +251,14 @@ A ProgressionSelector, which is not defined in the W3C Annotation Model, contain
 Sample 9: A ProgressionSelector indication that the annotation is positioned just after the middle of the resource:
 
 ```json
-"selector": [
-  {
-  "type": "ProgressionSelector",	 
-  "value": 0.534234255
-  }
-]
+{
+  "selector": [
+    {
+    "type": "ProgressionSelector",	 
+    "value": 0.534234255
+    }
+  ]
+}
 ```
 
 #### 1.2.3. Meta
@@ -308,7 +322,7 @@ The body property contains:
 | `highlight`| The style of the annotation; solid background by default. | "solid" \| "underline" \| "strikethrough" \| "outline" | No |
 | `language`| The language of the annotation. | BCP47 | No |
 | `textDirection`| The direction of the text; left-to-right by default. | "ltr" \| "rtl" | No |
-| `tags`| A set of labels categorising the annotation. | Array of strings | No |
+| `tag`| Free text categorising the annotation. | string | No |
 
 Note: read “Best Practices for Reading Systems” about using tags in annotations. 
 
@@ -321,12 +335,11 @@ Sample 11: An annotation Body.
   "body": {
     "type" : "TextualBody",
     "value" : "j'adore !",
-    "tags" : ["teacher"],   
+    "tag" : "teacher",   
     "color" : "#01E3F6",
     "language" : "fr",
     "textDirection" : "ltr"
-  },
-…
+  }
 }
 ```
 
@@ -452,31 +465,29 @@ When a Web Publication is packaged using the Readium Packaging Format, it is up 
 
 ## 4.1. Displaying filtered annotations
 
-The addition of tags to annotations enables filtering out unwanted annotations. 
+Reading systems SHOULD enable filtering by color or by tag. Filtering by color is not sufficient because imported annotations may have the same color as personal annotations, or both may have no colour to enable them to be disambiguated.  
 
-For instance, a user can temporarily hide his personal (untagged) annotations and only display “teacher” annotations. 
+For instance, a user can display blue annotations only, or “teacher” annotations only. 
 
-# 4.2. Importing annotations
+## 4.2. Importing annotations
 
-To simplify the association of an imported annotation set and its associated publication, a Reading System MUST offer a way to select a publication and then select an annotation set. A drag&drop of an annotation set into a Reading System MAY also be proposed, but finding the proper publication from the metadata in the annotation set is more complicated. 
+To simplify the association of annotations with a publication, a Reading System MUST offer a way to select a publication before selecting an annotation set. The drag&drop of an annotation set into a Reading System MAY also be proposed, but identifying the proper publication from the metadata in the annotation set is more complicated.
 
-An annotation is uniquely identified. If during the import of an annotation set, an annotation is re-imported, the Reading System MUST offer to the user the choice to override the existing annotation with the new one, skip the import of the specific item, or abort the import of the annotation set. 
+When importing an annotation set, a Reading System SHOULD display a message with the title of the annotation set and the number of annotations in the set. The Reading System MUST offer the user the choice to abort the import.
 
-If different annotation sets are imported sequentially and refer to the same publication, a Reading System SHOULD display a message with the title of the annotation set and the number of annotations in the set. The Reading System MUST offer the user the choice to abort the import.
+When a user imports an annotation set, he SHOULD be offered to enter a tag to be added automatically to every annotation in the set. By default, the proposed tag MAY be the title of the annotation set. If the user decides to tag the annotations, the new tag will override each tag already present in the annotations contained in the set.
 
-When a user imports an annotation set, he SHOULD be offered an additional tag to be added automatically to every annotation in the set. The proposed tag is, by default, the title of the Annotation Set. The user can edit this label (or replace it with a string of his choice). He can also choose to import the annotation set without an added tag.
+The advantage of doing this is that every annotation in a set titled “Grade B 2024” can be tagged by the user as “teacher”. It will become easy to only display “teacher” annotations. 
 
-The advantage of doing this is that every annotation in a set titled “Grade B 2024” can be tagged by the user as “teacher”. It will become easy to only display “teacher” annotations. This will stay true if the teacher has added other tags to his annotations. 
+Each annotation is uniquely identified. If during the import of an annotation set, an annotation is re-imported, the Reading System MUST offer to the user the choice to override the existing annotation with the new one, skip the import of the specific item, or abort the import of the annotation set. 
 
-# 4.3. Exporting annotations
+## 4.3. Exporting annotations
 
-When a user decides to export an Annotation Set from a reading system, he is proposed to filter the annotation set by tags (multiple choice). He may enter a title for the Annotation Set (empty by default). 
+When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotation set by tags (multiple choice). “Untagged annotations” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually untagged) and let “teacher” annotations unexported. 
 
-The filtering is an opt-in. “Untagged” MUST be a possible choice, and “All tags” MUST be an option.    
+He MAY enter a title for the annotation set (empty by default).   
 
-The advantage of this practice is that a user can export personal annotations (usually untagged) only (“teacher” annotations being unexported). 
-
-The application may propose alternative formats at export time: a human-friendly format may be handy. It could be a list of annotations with explicit references to the location of each annotation. 
+The application may propose alternative formats at export time: a HTML or markdown format may be handy, as a list of annotations with human-friendly references to the location of each annotation. 
 
 # 5. JSON Schemas
 
