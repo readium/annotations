@@ -289,21 +289,21 @@ Sample 10: Meta information contains ancestor headings and a page number:
   "type": "Annotation",
   "target": {
     "source": "OEBPS/text/chapter11.html",
+    "selector": [
+    ],
     "meta": {
       "headings": [
         {
         "level": 1,
-        "txt": "Section 11",
+        "txt": "Section 11"
         },
         {
         "level": 2,
-        "txt": "Sub Section 1",
+        "txt": "Sub Section 1"
         }
       ],
       "page": "XI"       
-    },
-    "selector": [
-    ]
+    }
   }
 }
 ```
@@ -364,18 +364,18 @@ The AnnotationSet object contains:
 
 ### 2.1. About
 
-  The About object contains information relative to the publication. Such metadata in intended to help associating an annotation set to a publication: 
+  The About object contains information relative to the publication. Such metadata in intended to help associating an annotation set with a publication: 
 
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
-| `identifier`| Publication identifiers. An ISBN is preferred.  | Array of strings | No |
-| `title`| The title of the publication. | string | No |
-| `format`| The media type of the publication. | string | No |
-| `publisher`| The name of the publisher. | string | No |
-| `creator`| The author, or comma separated authors. | string | No |
-| `date`| The release year. | ISO 8601 date | No |
+| `dc:identifier`| Publication identifiers. An ISBN is preferred.  | Array of strings | No |
+| `dc:title`| The title of the publication. | string | No |
+| `dc:format`| The media type of the publication. | string | No |
+| `dc:publisher`| The name of the publisher. | string | No |
+| `dc:creator`| The author, or comma separated authors. | string | No |
+| `dc:date`| The release year. | calendar year using four digits | No |
 
-Note: the names of the properties defined above are consistent with the definitions of the Dublin Core initiative. 
+Note: all properties defined above are from the Dublin Core vocabulary, referenced in the Web Annotation Data Model. 
 
 Sample 12: An AnnotationSet containing one annotation. 
 
@@ -389,19 +389,18 @@ Sample 12: An AnnotationSet containing one annotation.
   "title": "Annotations Mme Prof, La Peste, cours 1ere B",
   "about": {
      "dc:identifier": [
-        "urn:isbn:1234567890",
-     		"...",
+        "urn:isbn:1234567890"
      ],
      "dc:format": "application/epub+zip",
      "dc:title": "Alice in Wonderland",
      "dc:publisher": "Example Publisher",
      "dc:creator": "Anne O'Tater",
      "dc:date": "1865"
-  }
+  },
   "items": [
     {
       "@context": "http://www.w3.org/ns/anno.jsonld",
-      "id": "urn:uuid:123-123-123-123",
+      "id": "urn:uuid:234-234-234-234",
       "type": "Annotation",
       "target": {
       },
