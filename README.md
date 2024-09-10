@@ -479,15 +479,23 @@ When a user imports an annotation set, he SHOULD be offered to enter a tag to be
 
 The advantage of doing this is that every annotation in a set titled “Grade B 2024” can be tagged by the user as “teacher”. It will become easy to only display “teacher” annotations. 
 
-Each annotation is uniquely identified. If during the import of an annotation set, an annotation is re-imported, the Reading System MUST offer to the user the choice to override the existing annotation with the new one, skip the import of the specific item, or abort the import of the annotation set. 
+Each annotation is uniquely identified. If during the import of an annotation set, one or more annotations are re-imported, the Reading System MUST offer to the user the choice to override existing annotations or abort the import of the annotation set. 
 
-## 4.3. Exporting annotations
+## 4.3. Exporting annotations as a detached file
 
-When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotation set by tags (multiple choice). “Untagged annotations” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually untagged) and let “teacher” annotations unexported. 
+When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by tags (multiple choice). “Untagged annotations” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually untagged) and let “teacher” annotations unexported. 
 
-He MAY enter a title for the annotation set (empty by default).   
+He MAY enter a title for the annotation set (empty by default). Such title SHOULD become the exported filename.  
+
+He MUST be proposed to choose the directory in which the annotation set will be stored. 
 
 The application may propose alternative formats at export time: a HTML or markdown format may be handy, as a list of annotations with human-friendly references to the location of each annotation. 
+
+## 4.4. Exporting annotations in a publication
+
+When a user decides to export a publication from the Reading System, he SHOULD be proposed to embed the annotations associated with the publication. 
+
+If the user decides to embed annotations in a publication, he SHOULD be be proposed to filter the annotations by tags (multiple choice).
 
 # 5. JSON Schemas
 
