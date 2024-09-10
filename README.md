@@ -423,14 +423,7 @@ Note: I propose using a “rd-” prefix (for ReaDium). It would allow for easie
 
 ## 3.1. In EPUB
 
-The OPTIONAL annotations.json file in the META-INF directory holds an AnnotationSet. 
-
-Discussion:
-
-* META-INF currently contains a closed set of "configuration" files and extending it with a new file may raise interop issues (even if the EPUB spec does not state anything about the extensibility of META-INF). 
- * Should we instead reference the annotations in the manifest and consider annotations.json as a classical EPUB resource, like media overlays? The big disadvantage is that it would mean modifying the OPF (which is handled by the publisher) and invalidating any EPUB signature.
- * Or should we instead place the file in another well-known directory in the zip? 
-* Should we impose an XML translation of the JSON file to be more in line with other EPUB plumbing?
+The OPTIONAL `annotations.json` file in the META-INF directory holds an AnnotationSet. 
 
 ## 3.2. In Readium Web Publications
 
