@@ -159,6 +159,12 @@ Sample 3: A TextQuoteSelector contains the annotated text segment, a segment bef
 
 A FragmentSelector (https://www.w3.org/TR/annotation-model/#fragment-selector) MUST conform to a specific type; the fragment type is indicated by the conformsTo property and the value property gives the fragment value.
 
+In EPUB CFI fragment selectors, both the left-hand part (resource location in the publication) and the right-hand part (location of the annotation in the resource) are present.
+
+PDF fragment selectors MUST conform to the [RFC 8118](https://www.rfc-editor.org/rfc/rfc8118).
+
+Note: the RFC 8118 obsolates the [RFC 3778](https://www.rfc-editor.org/rfc/rfc3778) initially defined by the W3C Annotatopn Model. 
+
 Sample 4: A couple of FragmentSelectors in an EPUB; the first selector is an idref, the second is an EPUB CFI:
 
 ```json
@@ -178,8 +184,6 @@ Sample 4: A couple of FragmentSelectors in an EPUB; the first selector is an idr
 }
 ```
 
-Note about EPUB CFI selectors: both the left-hand part (resource location in the publication) and the right-hand part (location of the annotation in the resource) are present in the selector. 
-
 Sample 5: A PDF FragmentSelector:
 
 ```json
@@ -187,7 +191,7 @@ Sample 5: A PDF FragmentSelector:
   "selector": [
     {
     "type": "FragmentSelector",	 
-    "conformsTo": "http://tools.ietf.org/rfc/rfc3778",
+    "conformsTo": "https://www.rfc-editor.org/rfc/rfc8118",
     "value": "page=10&viewrect=50,50,650,480" 
     }
   ]
