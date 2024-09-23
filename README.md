@@ -39,7 +39,7 @@ This document defines the following annotation properties:
 | `type` | The RDF structure type. It MUST be "Annotation". | string | Yes |
 | `created` | The time when the annotation was created. | ISO 8601 datetime | Yes |
 | `modified` | The time when the annotation was modified, after creation. | ISO 8601 datetime | No |
-| `creator` | The author of the annotation. This may be either a human or an organization. | IRI | No |
+| `creator` | The creator of the annotation. This may be either a human or an organization. | Creator | No |
 | `target` | The target content of the annotation. | Target | Yes |
 | `body` | The annotation body. | Body | Yes |
 
@@ -63,7 +63,7 @@ Sample 1: Core structure of a Readium annotation
 
 The creator of an annotation is a person or an organisation. 
 
-This document defines the following creatorÒ properties: 
+This document defines the following creator properties: 
 
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
