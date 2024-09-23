@@ -36,13 +36,12 @@ This document defines the following annotation properties:
 | ---- | ----------- | ------ | --------- |
 | `@context`| The context that determines the meaning of the JSON as an Annotation. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
 | `id` | The identity of the annotation. A uuid formatted as a URN is recommended. | IRI | Yes |
-| `type` | The RDF structure type. It MUST be “Annotation”. | string | Yes |
+| `type` | The RDF structure type. It MUST be "Annotation". | string | Yes |
 | `created` | The time when the annotation was created. | ISO 8601 datetime | Yes |
 | `modified` | The time when the annotation was modified, after creation. | ISO 8601 datetime | No |
+| `creator` | The author of the annotation. This may be either a human or an organization. | IRI | No |
 | `target` | The target content of the annotation. | Target | Yes |
 | `body` | The annotation body. | Body | Yes |
-
-Note: created and modified are not part of the W3C Annotation Model. 
 
 Sample 1: Core structure of a Readium annotation
 
@@ -59,6 +58,18 @@ Sample 1: Core structure of a Readium annotation
   }
 }
 ```
+
+### 1.2. Creator
+
+The creator of an annotation is a person or an organisation. 
+
+This document defines the following creatorÒ properties: 
+
+| Name | Description | Format | Required? |
+| ---- | ----------- | ------ | --------- |
+| `id`| The identity of the creator. | IRI | Yes |
+| `type` | The RDF structure type. It MUST be "Person" or "Organization". | string | Yes |
+| `name`| The name of the creator.  | string | No |
 
 ### 1.2. Target
 
@@ -361,9 +372,9 @@ The AnnotationSet object contains:
 | `id` | The identity of the annotation set. A uuid formatted as a URN is recommended. | IRI | Yes |
 | `type` | The RDF structure type. It MUST be “AnnotationSet”. | string | Yes |
 | `generator`| The agent responsible for the generation of the object serialisation. The preferred value is the Github URL of the application source-code. | IRI | Yes |
-| `about`| Information relative to the publication. | About object | Yes |
 | `generated`| The time when the set was generated. | ISO 8601 datetime | No |
-| `title`| A label helping to identify the set. | string | No |
+| `about`| Information relative to the publication. | About object | Yes |
+| `title`| A label helping on the identification of the set. | string | No |
 | `items`| The annotations of the set.  | Array of Annotation objects | Yes |
 
 ### 2.1. About
