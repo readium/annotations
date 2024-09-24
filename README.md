@@ -59,7 +59,7 @@ Sample 1: Core structure of a Readium annotation
 }
 ```
 
-### 1.2. Creator
+### 1.1. Creator
 
 The creator of an annotation is a person or an organisation. 
 
@@ -71,7 +71,7 @@ This document defines the following creator properties:
 | `type` | The RDF structure type. It MUST be "Person" or "Organization". | string | Yes |
 | `name`| The name of the creator.  | string | No |
 
-### 1.2. Target
+### 1.1. Target
 
 The target of an annotation associates the annotation to a specific segment of a resource in the current publication. 
 
@@ -83,7 +83,7 @@ This document defines three target sub-properties:
 | `selector`| The segment of the target resource that is annotated.  | Array of Selector objects | Yes |
 | `meta`| Indications that help locate the selector in the resource. | Meta | No |
 
-#### 1.2.1. Source 
+#### 1.1.1. Source 
 
 The target resource MUST be identified by a URL relative to the root of its parent publication.
 
@@ -107,7 +107,7 @@ Sample 2: the source of the annotation is the relative URL identifying an HTML d
 }
 ```
 
-#### 1.2.2. Selector
+#### 1.1.1. Selector
 
 An annotation refers to a segment of a resource, which is identified by one or more Selectors. The nature of the Selector and methods to describe segments are dependent on the type of resource.
 
@@ -143,7 +143,7 @@ An Audiobook annotation:
 
 A Reading System is free to select the Selector with the best precision. It will select an alternative Selector as a fallback in case the preferred one does not return a correct position in the publication: this can happen if the publication has been modified after the annotation has been created. 
 
-##### 1.2.2.1. TextQuoteSelector
+##### 1.1.1.1. TextQuoteSelector
 
 The TextQuoteSelector is defined in https://www.w3.org/TR/annotation-model/#text-quote-selector. 
 
@@ -166,7 +166,7 @@ Sample 3: A TextQuoteSelector contains the annotated text segment, a segment bef
 }
 ```
 
-##### 1.2.2.2. FragmentSelector
+##### 1.1.1.1. FragmentSelector
 
 A FragmentSelector (https://www.w3.org/TR/annotation-model/#fragment-selector) MUST conform to a specific type; the fragment type is indicated by the conformsTo property and the value property gives the fragment value.
 
@@ -237,7 +237,7 @@ Sample 7: An Audiobook Temporal Media FragmentSelector:
 }
 ```
 
-##### 1.2.2.3. DomRangeSelector
+##### 1.1.1.1. DomRangeSelector
 
 A DomRangeSelector, not defined in the W3C Annotation Model, contains start and end container information; for each of these extremities, it provides a CSS Selector, a child text node index and an offset. 
 
@@ -259,7 +259,7 @@ Sample 8: A DomRangeSelector:
 }
 ```
 
-##### 1.2.2.4. ProgressionSelector
+##### 1.1.1.1. ProgressionSelector
 
 A ProgressionSelector, which is not defined in the W3C Annotation Model, contains a decimal value representing the annotation's position as a percentage of the total size of the resource.  
 
@@ -276,7 +276,7 @@ Sample 9: A ProgressionSelector indication that the annotation is positioned jus
 }
 ```
 
-#### 1.2.3. Meta
+#### 1.1.1. Meta
 
 Meta information MAY be added to an annotation as “breadcrumbs”,  to ease the display of contextual information relative to the global position of the annotation in the publication.
 
@@ -287,7 +287,7 @@ The meta property contains:
 | `headings`| Ancestor headings of the annotation. | Array of Heading objects | No |
 | `page`| Page of the publication containing the annotation. It may be either a synthetic page or a print equivalent. It is essentially a visual indicator. | string | No |
 
-##### 1.2.3.1. Headings
+##### 1.1.1.1. Headings
 
 The Headings object contains:
 
@@ -323,7 +323,7 @@ Sample 10: Meta information contains ancestor headings and a page number:
 }
 ```
 
-### 1.3. Body
+### 1.1. Body
 
 The body of an annotation contains plain text, style, and tags. 
 
@@ -358,7 +358,7 @@ Sample 11: An annotation Body.
 }
 ```
 
-## 2. Annotation Set
+## 1. Annotation Set
 
 An Annotation does not contain information about its associated publication. If a set of annotations is shared as a detached file, it is mandatory to export with them information that will help find the associated publication even if the publication is not adequately identified.
 
@@ -370,16 +370,27 @@ The AnnotationSet object contains:
 | ---- | ----------- | ------ | --------- |
 | `@context`| The context that determines the meaning of the JSON as an annotation set. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
 | `id` | The identity of the annotation set. A uuid formatted as a URN is recommended. | URI | Yes |
-| `type` | The RDF structure type. It MUST be “AnnotationSet”. | string | Yes |
-| `generator`| The agent responsible for the generation of the object serialisation. The preferred value is the Github URL of the application source-code. | URI | Yes |
-| `generated`| The time when the set was generated. | ISO 8601 datetime | No |
+| `type` | The RDF structure type. It MUST be "AnnotationSet". | string | Yes |
 | `about`| Information relative to the publication. | About object | Yes |
-| `title`| A label helping on the identification of the set. | string | No |
+| `generator`| The agent responsible for the generation of the object serialisation. | Generator | No |
+| `generated`| The time when the set was generated. | ISO 8601 datetime | No |
+| `title`| A title helping on the identification of the set. | string | No |
 | `items`| The annotations of the set.  | Array of Annotation objects | Yes |
 
-### 2.1. About
+### 1.1. Generator
 
-  The About object contains information relative to the publication. Such metadata in intended to help associating an annotation set with a publication: 
+The Generator object contains information relative to the software from which the serialized annotation has been produced. 
+
+| Name | Description | Format | Required? |
+| ---- | ----------- | ------ | --------- |
+| `id` | The identity of the generator software. The recommended value is the Github URL of the application source-code. | URI | Yes |
+| `type` | The RDF structure type. It MUST be "Software". | string | Yes |
+| `name`| The name of the generator software. | string | Yes |
+| `homepage`| The home page presenting the generator software. | URL | No |
+
+### 1.1. About
+
+The About object contains information relative to the publication. Such metadata in intended to help associating an annotation set with a publication: 
 
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
@@ -426,7 +437,7 @@ Sample 12: An AnnotationSet containing one annotation.
 }
 ```
 
-### 2.2 Media type of an Annotation Set
+### 1.1 Media type of an Annotation Set
 
 This specification introduces a dedicated media type value to identify an AnnotationSet: `application/rd-annotations+json`.
 
@@ -434,13 +445,13 @@ HTTP responses associated with annotation files must indicate this media type in
 
 Note: I propose using a “rd-” prefix (for ReaDium). It would allow for easier registration at [IANA](https://www.iana.org/assignments/media-types/media-types.xhtml). Should we extend this to other media types, including “application/webpub+json”?
 
-# 3. Embedding annotations in publications
+# 1. Embedding annotations in publications
 
-## 3.1. In EPUB
+## 1.1. In EPUB
 
 The OPTIONAL `annotations.json` file in the META-INF directory holds an AnnotationSet. 
 
-## 3.2. In Readium Web Publications
+## 1.1. In Readium Web Publications
 
 The JSON file holding an AnnotationSet MUST be represented as a link object in the `links` collection, with an `annotations` relation. 
 
@@ -468,15 +479,15 @@ Sample 13: A Readium Web Publication Manifest containing a link to an annotation
 
 When a Web Publication is packaged using the Readium Packaging Format, it is up to the generator to embed the annotation file in the package or keep it remote.
 
-# 4. Best practices for Reading Systems
+# 1. Best practices for Reading Systems
 
-## 4.1. Displaying filtered annotations
+## 1.1. Displaying filtered annotations
 
 Reading systems SHOULD enable filtering by color or by tag. Filtering by color is not sufficient because imported annotations may have the same color as personal annotations, or both may have no colour to enable them to be disambiguated.  
 
 For instance, a user can display blue annotations only, or “teacher” annotations only. 
 
-## 4.2. Importing annotations
+## 1.1. Importing annotations
 
 To simplify the association of annotations with a publication, a Reading System MUST offer a way to select a publication before selecting an annotation set. The drag&drop of an annotation set into a Reading System MAY also be proposed, but identifying the proper publication from the metadata in the annotation set is more complicated.
 
@@ -488,7 +499,7 @@ The advantage of doing this is that every annotation in a set titled “Grade B 
 
 Each annotation is uniquely identified. If during the import of an annotation set, one or more annotations are re-imported, the Reading System MUST offer to the user the choice to override existing annotations or abort the import of the annotation set. 
 
-## 4.3. Exporting annotations as a detached file
+## 1.1. Exporting annotations as a detached file
 
 When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by tags (multiple choice). “Untagged annotations” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually untagged) and let “teacher” annotations unexported. 
 
@@ -498,15 +509,15 @@ He MUST be proposed to choose the directory in which the annotation set will be 
 
 The application may propose alternative formats at export time: a HTML or markdown format may be handy, as a list of annotations with human-friendly references to the location of each annotation. 
 
-## 4.4. Exporting annotations in a publication
+## 1.1. Exporting annotations in a publication
 
 When a user decides to export a publication from the Reading System, he SHOULD be proposed to embed the annotations associated with the publication. 
 
 If the user decides to embed annotations in a publication, he SHOULD be be proposed to filter the annotations by tags (multiple choice).
 
-# 5. JSON Schemas
+# 1. JSON Schemas
 
-# 6. References
+# 1. References
 
 Open Annotation in EPUB, 2015: https://idpf.org/epub/oa/ 
 
