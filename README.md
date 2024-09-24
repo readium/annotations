@@ -111,21 +111,15 @@ Sample 2: the source of the annotation is the relative URL identifying an HTML d
 
 An annotation refers to a segment of a resource, which is identified by one or more Selectors. The nature of the Selector and methods to describe segments are dependent on the type of resource.
 
-An EPUB annotation (where the publication is not protected by DRM with character copy restriction):
+An EPUB annotation:
 
 * MUST contain a TextQuoteSelector,
-* MUST contain an EPUB CFI FragmentSelector,
+* MAY contain an EPUB CFI FragmentSelector,
 * MAY contain a DomRangeSelector, 
 * MAY contain an HTML FragmentSelector,
 * MAY contain a ProgressionSelector.
 
-An EPUB annotation (where the publication is protected by DRM with character copy restriction):
-
-* MUST NOT contain a TextQuoteSelector,
-* MUST contain an EPUB CFI FragmentSelector,
-* MAY contain an HTML FragmentSelector,
-* MAY contain a DomRangeSelector, 
-* MAY contain a ProgressionSelector.
+Warning: there is an open discussion about the selector to be used as _lingua franca_ for EPUB. TextQuoteSelectors are problematic when the content is protected by a DRM with character copy restrictions, but EPUB CFI are problematic for other reasons. 
 
 A PDF annotation:
 
