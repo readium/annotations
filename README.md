@@ -35,7 +35,7 @@ This document defines the following annotation properties:
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
 | `@context`| The context that determines the meaning of the JSON as an Annotation. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
-| `id` | The identity of the annotation. A uuid formatted as a URN is recommended. | IRI | Yes |
+| `id` | The identity of the annotation. A uuid formatted as a URN is recommended. | URI | Yes |
 | `type` | The RDF structure type. It MUST be "Annotation". | string | Yes |
 | `created` | The time when the annotation was created. | ISO 8601 datetime | Yes |
 | `modified` | The time when the annotation was modified, after creation. | ISO 8601 datetime | No |
@@ -67,7 +67,7 @@ This document defines the following creator properties:
 
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
-| `id`| The identity of the creator. | IRI | Yes |
+| `id`| The identity of the creator. | URI | Yes |
 | `type` | The RDF structure type. It MUST be "Person" or "Organization". | string | Yes |
 | `name`| The name of the creator.  | string | No |
 
@@ -79,7 +79,7 @@ This document defines three target sub-properties:
 
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
-| `source`| The identity of the target resource. | IRI | Yes |
+| `source`| The identity of the target resource. | URI | Yes |
 | `selector`| The segment of the target resource that is annotated.  | Array of Selector objects | Yes |
 | `meta`| Indications that help locate the selector in the resource. | Meta | No |
 
@@ -369,9 +369,9 @@ The AnnotationSet object contains:
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
 | `@context`| The context that determines the meaning of the JSON as an annotation set. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
-| `id` | The identity of the annotation set. A uuid formatted as a URN is recommended. | IRI | Yes |
+| `id` | The identity of the annotation set. A uuid formatted as a URN is recommended. | URI | Yes |
 | `type` | The RDF structure type. It MUST be “AnnotationSet”. | string | Yes |
-| `generator`| The agent responsible for the generation of the object serialisation. The preferred value is the Github URL of the application source-code. | IRI | Yes |
+| `generator`| The agent responsible for the generation of the object serialisation. The preferred value is the Github URL of the application source-code. | URI | Yes |
 | `generated`| The time when the set was generated. | ISO 8601 datetime | No |
 | `about`| Information relative to the publication. | About object | Yes |
 | `title`| A label helping on the identification of the set. | string | No |
