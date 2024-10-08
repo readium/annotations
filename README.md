@@ -37,11 +37,16 @@ This document defines the following annotation properties:
 | `@context`| The context that determines the meaning of the JSON as an Annotation. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
 | `id` | The identity of the annotation. A uuid formatted as a URN is recommended. | URI | Yes |
 | `type` | The RDF structure type. It MUST be "Annotation". | string | Yes |
+| `motivation` | The motivation for the annotation's creation. Only used for tagging bookmarks. | "bookmarking" | No |
 | `created` | The time when the annotation was created. | ISO 8601 datetime | Yes |
 | `modified` | The time when the annotation was modified, after creation. | ISO 8601 datetime | No |
 | `creator` | The creator of the annotation. This may be either a human or an organization. | Creator | No |
 | `target` | The target content of the annotation. | Target | Yes |
-| `body` | The annotation body. | Body | Yes |
+| `body` | The annotation body. | Body | No |
+
+An annotation without Body structure corresponds to a "highlight" or a "bookmark". 
+
+A bookmark is defined by the inclusion of a `motivation` property with a value `bookmarking`.  
 
 Sample 1: Core structure of a Readium annotation
 
@@ -59,35 +64,11 @@ Sample 1: Core structure of a Readium annotation
 }
 ```
 
-### 1.1. Bookmark Object
+### 1.1. Bookmarks
 
-Bookmarks and Annotations share the same W3C Web Annotation Data Model (https://www.w3.org/TR/annotation-model/) and  syntax. 
+It is necessary to disambiguate annotations and bookmarks; Reading systems don't process these marks the same way. 
 
-The only difference between these objects is that a Bookmark has as specific `type` and no `body`: 
-
-| Name | Description | Format | Required? |
-| ---- | ----------- | ------ | --------- |
-| `@context`| The context that determines the meaning of the JSON as an Annotation. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
-| `id` | The identity of the bookmark. A uuid formatted as a URN is recommended. | URI | Yes |
-| `type` | The RDF structure type. It MUST be "Bookmark". | string | Yes |
-| `created` | The time when the bookmark was created. | ISO 8601 datetime | Yes |
-| `modified` | The time when the bookmark was modified, after creation. | ISO 8601 datetime | No |
-| `creator` | The creator of the bookmark. This may be either a human or an organization. | Creator | No |
-| `target` | The target content of the bookmark. | Target | Yes |
-
-Sample 1: Core structure of a Readium bookmark
-
-```json
-{
-  "@context": "http://www.w3.org/ns/anno.jsonld",
-  "id": "urn:uuid:123-123-123-123",
-  "type": "Bookmark",
-  "created": "2023-10-14T15:13:28Z",
-  "modified": "2024-01-29T09:00:00Z",
-  "target": {
-   }
-}
-```
+The 
 
 ### 1.1. Creator
 
@@ -110,8 +91,10 @@ This document defines three target sub-properties:
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
 | `source`| The identity of the target resource. | URI | Yes |
-| `selector`| The segment of the target resource that is annotated.  | Array of Selector objects | Yes |
+| `selector`| The segment of the target resource that is annotated.  | Array of Selector objects | No |
 | `meta`| Indications that help locate the selector in the resource. | Meta | No |
+
+A Target with no Selector indicates that the annotation is targeting the entire target resource. 
 
 #### 1.1.1. Source 
 
@@ -149,7 +132,7 @@ An EPUB annotation:
 * MAY contain an HTML FragmentSelector,
 * MAY contain a ProgressionSelector.
 
-Warning: there is an open discussion about the selector to be used as _lingua franca_ for EPUB. TextQuoteSelectors are problematic when the content is protected by a DRM with character copy restrictions, but EPUB CFI are problematic for other reasons. 
+Warning: there is an open discussion about the selector to be used as _lingua franca_ for EPUB. TextQuoteSelectors are problematic when the content is protected by a DRM with character copy restrictions, but EPUB CFI are problematic for other reasons (complexity, lack of clarity of the specification, lack of support by reading systems and interoperability issues come first). We are studying TextFragments, but they seem problematic also. 
 
 A PDF annotation:
 
@@ -158,8 +141,10 @@ A PDF annotation:
 
 A Divina annotation:
 
-* MUST contain a Rectangular Media FragmentSelector,
+* MAY contain a Rectangular Media FragmentSelector,
 * MAY contain a ProgressionSelector.
+
+Note: A Divina annotation with no Selector targets a whole image.  
 
 An Audiobook annotation:
 * MUST contain a Temporal Media FragmentSelector,
