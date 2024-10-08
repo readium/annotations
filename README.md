@@ -421,7 +421,7 @@ The About object contains information relative to the publication. Such metadata
 | `dc:title`| The title of the publication. | string | No |
 | `dc:format`| The media type of the publication. | string | No |
 | `dc:publisher`| The name of the publisher. | string | No |
-| `dc:creator`| The author, or comma separated authors. | string | No |
+| `dc:creator`| The author(s) of the publication. | array of strings | No |
 | `dc:date`| The release year. | calendar year using four digits | No |
 
 Note: all properties defined above are from the Dublin Core vocabulary, referenced in the Web Annotation Data Model. 
@@ -443,7 +443,7 @@ Sample 12: An AnnotationSet containing one annotation.
      "dc:format": "application/epub+zip",
      "dc:title": "Alice in Wonderland",
      "dc:publisher": "Example Publisher",
-     "dc:creator": "Anne O'Tater",
+     "dc:creator": ["Anne O'Tater"],
      "dc:date": "1865"
   },
   "items": [
