@@ -64,12 +64,6 @@ Sample 1: Core structure of a Readium annotation
 }
 ```
 
-### 1.1. Bookmarks
-
-It is necessary to disambiguate annotations and bookmarks; Reading systems don't process these marks the same way. 
-
-The 
-
 ### 1.1. Creator
 
 The creator of an annotation is a person or an organisation. 
