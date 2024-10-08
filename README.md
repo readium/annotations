@@ -115,7 +115,7 @@ This document defines three target sub-properties:
 
 #### 1.1.1. Source 
 
-The target resource MUST be identified by a URL relative to the root of its parent publication.
+The target resource MUST be identified by the URL of an existing resource in the publication.
 
 If the annotation is attached to an EPUB, the source value must also be present as one of the item/@href values of the [manifest element](https://www.w3.org/TR/epub-33/#sec-manifest-elem).  
 
@@ -460,7 +460,7 @@ Sample 12: An AnnotationSet containing one annotation.
 }
 ```
 
-### 1.1 Media type of an Annotation Set
+### 1.1. Media type of an Annotation Set
 
 This specification introduces a dedicated media type value to identify an AnnotationSet: `application/rd-annotations+json`.
 
@@ -468,11 +468,15 @@ HTTP responses associated with annotation files must indicate this media type in
 
 Note: I propose using a “rd-” prefix (for ReaDium). It would allow for easier registration at [IANA](https://www.iana.org/assignments/media-types/media-types.xhtml). Should we extend this to other media types, including “application/webpub+json”?
 
+### 1.1. File extension of an Annotation Set
+
+This specification introduces a dedicated file extension for serialized AnnotationSets: `.ann`.  
+
 # 1. Embedding annotations in publications
 
 ## 1.1. In EPUB
 
-The OPTIONAL `annotations.json` file in the META-INF directory holds an AnnotationSet. 
+The OPTIONAL `annotations.ann` file in the META-INF directory holds an AnnotationSet. 
 
 ## 1.1. In Readium Web Publications
 
@@ -493,7 +497,7 @@ Sample 13: A Readium Web Publication Manifest containing a link to an annotation
     },
     {
       "rel": "annotations", 
-      "href": "https://example.com/annotations.json", 
+      "href": "https://example.com/annotations.ann", 
       "type": "application/rd-annotations+json"
     }
   ]
@@ -525,6 +529,8 @@ When a user decides to export an annotation set from a reading system, he SHOULD
 He MAY enter a title for the annotation set (empty by default). Such title SHOULD become the exported filename.  
 
 He MUST be proposed to choose the directory in which the annotation set will be stored. 
+
+The file extention of the file MUST be `.ann`. 
 
 The application may propose alternative formats at export time: a HTML or markdown format may be handy, as a list of annotations with human-friendly references to the location of each annotation. 
 
