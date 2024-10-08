@@ -335,7 +335,7 @@ The body property contains:
 | `type`| The body type. It MUST be “TextualBody”. | string | Yes |
 | `value`| The textual content of the annotation. | string | Yes |
 | `format`| The media-type of the annotation value. 'plain/text' by default. | rfc6838 | No |
-| `color`| The recommended colour of the annotation. | [CSS Color Module Level 3](https://www.w3.org/TR/css-color-3/) | No |
+| `color`| The recommended colour of the annotation. | "pink", "orange", "yellow", "green", "blue", "purple" | No |
 | `highlight`| The style of the annotation; solid background by default. | "solid" \| "underline" \| "strikethrough" \| "outline" | No |
 | `language`| The language of the annotation. | BCP47 | No |
 | `textDirection`| The direction of the text; left-to-right by default. | "ltr" \| "rtl" | No |
@@ -353,7 +353,7 @@ Sample 11: An annotation Body.
     "type" : "TextualBody",
     "value" : "j'adore !",
     "keyword" : "teacher",   
-    "color" : "#01E3F6",
+    "color" : "blue",
     "language" : "fr",
     "textDirection" : "ltr"
   }
