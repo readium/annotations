@@ -135,8 +135,6 @@ An Audiobook annotation:
 * MUST contain a Temporal Media FragmentSelector,
 * MAY contain a ProgressionSelector.
 
-A Reading System is free to select the Selector with the best precision. It will select an alternative Selector as a fallback in case the preferred one does not return a correct position in the publication: this can happen if the publication has been modified after the annotation has been created. 
-
 ##### 1.1.1.1. TextQuoteSelector
 
 The TextQuoteSelector is defined in https://www.w3.org/TR/annotation-model/#text-quote-selector. 
@@ -327,13 +325,14 @@ The body property contains:
 | ---- | ----------- | ------ | --------- |
 | `type`| The body type. It MUST be “TextualBody”. | string | Yes |
 | `value`| The textual content of the annotation. | string | Yes |
+| `format`| The media-type of the annotation value. 'plain/text' by default. | rfc6838 | No |
 | `color`| The recommended colour of the annotation. | [CSS Color Module Level 3](https://www.w3.org/TR/css-color-3/) | No |
 | `highlight`| The style of the annotation; solid background by default. | "solid" \| "underline" \| "strikethrough" \| "outline" | No |
 | `language`| The language of the annotation. | BCP47 | No |
 | `textDirection`| The direction of the text; left-to-right by default. | "ltr" \| "rtl" | No |
-| `tag`| Free text categorising the annotation. | string | No |
+| `keyword`| Free text categorising the annotation. | string | No |
 
-Note: read “Best Practices for Reading Systems” about using tags in annotations. 
+Note: read “Best practices for Reading Systems” about using a keyword in an annotation. 
 
 Sample 11: An annotation Body. 
 
@@ -344,7 +343,7 @@ Sample 11: An annotation Body.
   "body": {
     "type" : "TextualBody",
     "value" : "j'adore !",
-    "tag" : "teacher",   
+    "keyword" : "teacher",   
     "color" : "#01E3F6",
     "language" : "fr",
     "textDirection" : "ltr"
@@ -475,27 +474,23 @@ When a Web Publication is packaged using the Readium Packaging Format, it is up 
 
 # 1. Best practices for Reading Systems
 
+_This section is non-normative._ 
+
 ## 1.1. Displaying filtered annotations
 
-Reading systems SHOULD enable filtering by color or by tag. Filtering by color is not sufficient because imported annotations may have the same color as personal annotations, or both may have no colour to enable them to be disambiguated.  
+Reading systems should enable filtering by color or by keyword. Filtering by color is not sufficient because imported annotations may have the same color as personal annotations, or both may have no colour to enable them to be disambiguated.  
 
 For instance, a user can display blue annotations only, or “teacher” annotations only. 
 
-## 1.1. Importing annotations
+## 1.1. Using multiple selectors
 
-To simplify the association of annotations with a publication, a Reading System MUST offer a way to select a publication before selecting an annotation set. The drag&drop of an annotation set into a Reading System MAY also be proposed, but identifying the proper publication from the metadata in the annotation set is more complicated.
+It is recommended that Reading Systems export Progression Selectors, as they can be used for sorting annotations when no other sortable selector is present.
 
-When importing an annotation set, a Reading System SHOULD display a message with the title of the annotation set and the number of annotations in the set. The Reading System MUST offer the user the choice to abort the import.
-
-When a user imports an annotation set, he SHOULD be offered to enter a tag to be added automatically to every annotation in the set. By default, the proposed tag MAY be the title of the annotation set. If the user decides to tag the annotations, the new tag will override each tag already present in the annotations contained in the set.
-
-The advantage of doing this is that every annotation in a set titled “Grade B 2024” can be tagged by the user as “teacher”. It will become easy to only display “teacher” annotations. 
-
-Each annotation is uniquely identified. If during the import of an annotation set, one or more annotations are re-imported, the Reading System MUST offer to the user the choice to override existing annotations or abort the import of the annotation set. 
+When displaying an annotation, a Reading System is free to use the most precise Selector available. It will select an alternative Selector as a fallback in case the preferred one does not return a correct position in the publication: this can happen if the publication has been modified after the annotation has been created. 
 
 ## 1.1. Exporting annotations as a detached file
 
-When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by tags (multiple choice). “Untagged annotations” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually untagged) and let “teacher” annotations unexported. 
+When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by keywords (multiple choice). “Annotations with no keyword” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually with no keyword) and let “teacher” annotations unexported. 
 
 He MAY enter a title for the annotation set (empty by default). Such title SHOULD become the exported filename.  
 
@@ -507,7 +502,16 @@ The application may propose alternative formats at export time: a HTML or markdo
 
 When a user decides to export a publication from the Reading System, he SHOULD be proposed to embed the annotations associated with the publication. 
 
-If the user decides to embed annotations in a publication, he SHOULD be be proposed to filter the annotations by tags (multiple choice).
+If the user decides to embed annotations in a publication, he SHOULD be be proposed to filter the annotations by keywords (multiple choice).
+
+## 1.1. Importing annotations
+
+To simplify the association of annotations with a publication, a Reading System MUST offer a way to select a publication before selecting an annotation set. The drag&drop of an annotation set into a Reading System MAY also be proposed, but identifying the proper publication from the metadata in the annotation set is more complicated.
+
+When importing an annotation set, a Reading System SHOULD display a message with the title of the annotation set and the number of annotations in the set. The Reading System MUST offer the user the choice to abort the import.
+
+Each annotation is uniquely identified. If during the import of an annotation set, one or more annotations are re-imported, the Reading System MUST offer to the user the choice to override existing annotations or abort the import of the annotation set. 
+
 
 # 1. JSON Schemas
 
