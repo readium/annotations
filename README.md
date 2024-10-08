@@ -59,6 +59,36 @@ Sample 1: Core structure of a Readium annotation
 }
 ```
 
+### 1.1. Bookmark Object
+
+Bookmarks and Annotations share the same W3C Web Annotation Data Model (https://www.w3.org/TR/annotation-model/) and  syntax. 
+
+The only difference between these objects is that a Bookmark has as specific `type` and no `body`: 
+
+| Name | Description | Format | Required? |
+| ---- | ----------- | ------ | --------- |
+| `@context`| The context that determines the meaning of the JSON as an Annotation. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
+| `id` | The identity of the bookmark. A uuid formatted as a URN is recommended. | URI | Yes |
+| `type` | The RDF structure type. It MUST be "Bookmark". | string | Yes |
+| `created` | The time when the bookmark was created. | ISO 8601 datetime | Yes |
+| `modified` | The time when the bookmark was modified, after creation. | ISO 8601 datetime | No |
+| `creator` | The creator of the bookmark. This may be either a human or an organization. | Creator | No |
+| `target` | The target content of the bookmark. | Target | Yes |
+
+Sample 1: Core structure of a Readium bookmark
+
+```json
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "id": "urn:uuid:123-123-123-123",
+  "type": "Bookmark",
+  "created": "2023-10-14T15:13:28Z",
+  "modified": "2024-01-29T09:00:00Z",
+  "target": {
+   }
+}
+```
+
 ### 1.1. Creator
 
 The creator of an annotation is a person or an organisation. 
@@ -317,7 +347,7 @@ Sample 10: Meta information contains ancestor headings and a page number:
 
 ### 1.1. Body
 
-The body of an annotation contains plain text, style, and tags. 
+The body of an annotation contains plain text, style, and an optional keyword. 
 
 The body property contains: 
 
