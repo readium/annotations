@@ -277,7 +277,7 @@ Sample 9: A ProgressionSelector indication that the annotation is positioned jus
 }
 ```
 
-#### 1.1.1. Meta
+#### 1.1.2. Meta
 
 Meta information MAY be added to an annotation as “breadcrumbs”,  to ease the display of contextual information relative to the global position of the annotation in the publication.
 
@@ -288,7 +288,7 @@ The meta property contains:
 | `headings`| Ancestor headings of the annotation. | Array of Heading objects | No |
 | `page`| Page of the publication containing the annotation. It may be either a synthetic page or a print equivalent. It is essentially a visual indicator. | string | No |
 
-##### 1.1.1.1. Headings
+##### 1.1.2.1. Headings
 
 The Headings object contains:
 
@@ -324,7 +324,7 @@ Sample 10: Meta information contains ancestor headings and a page number:
 }
 ```
 
-### 1.1. Body
+### 1.2. Body
 
 The body of an annotation contains plain text, style, and an optional keyword. 
 
@@ -360,7 +360,7 @@ Sample 11: An annotation Body.
 }
 ```
 
-## 1. Annotation Set
+## 2. Annotation Set
 
 An Annotation does not contain information about its associated publication. If a set of annotations is shared as a detached file, it is mandatory to export with them information that will help find the associated publication even if the publication is not adequately identified.
 
@@ -373,13 +373,13 @@ The AnnotationSet object contains:
 | `@context`| The context that determines the meaning of the JSON as an annotation set. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
 | `id` | The identity of the annotation set. A uuid formatted as a URN is recommended. | URI | Yes |
 | `type` | The RDF structure type. It MUST be "AnnotationSet". | string | Yes |
-| `about`| Information relative to the publication. | About object | Yes |
 | `generator`| The agent responsible for the generation of the object serialisation. | Generator | No |
+| `about`| Information relative to the publication. | About object | Yes |
 | `generated`| The time when the set was generated. | ISO 8601 datetime | No |
 | `title`| A title helping on the identification of the set. | string | No |
 | `items`| The annotations of the set.  | Array of Annotation objects | Yes |
 
-### 1.1. Generator
+### 2.1. Generator
 
 The Generator object contains information relative to the software from which the serialized annotation has been produced. 
 
@@ -390,7 +390,7 @@ The Generator object contains information relative to the software from which th
 | `name`| The name of the generator software. | string | Yes |
 | `homepage`| The home page presenting the generator software. | URL | No |
 
-### 1.1. About
+### 2.2. About
 
 The About object contains information relative to the publication. Such metadata in intended to help associating an annotation set with a publication: 
 
@@ -439,7 +439,7 @@ Sample 12: An AnnotationSet containing one annotation.
 }
 ```
 
-### 1.1. Media type of an Annotation Set
+### 2.3. Media type of an Annotation Set
 
 This specification introduces a dedicated media type value to identify an AnnotationSet: `application/rd-annotations+json`.
 
@@ -447,17 +447,17 @@ HTTP responses associated with annotation files must indicate this media type in
 
 Note: I propose using a “rd-” prefix (for ReaDium). It would allow for easier registration at [IANA](https://www.iana.org/assignments/media-types/media-types.xhtml). Should we extend this to other media types, including “application/webpub+json”?
 
-### 1.1. File extension of an Annotation Set
+### 2.4. File extension of an Annotation Set
 
 This specification introduces a dedicated file extension for serialized AnnotationSets: `.ann`.  
 
-# 1. Embedding annotations in publications
+# 3. Embedding annotations in publications
 
-## 1.1. In EPUB
+## 3.1. In EPUB
 
 The OPTIONAL `annotations.ann` file in the META-INF directory holds an AnnotationSet. 
 
-## 1.1. In Readium Web Publications
+## 3.2. In Readium Web Publications
 
 The JSON file holding an AnnotationSet MUST be represented as a link object in the `links` collection, with an `annotations` relation. 
 
@@ -485,23 +485,23 @@ Sample 13: A Readium Web Publication Manifest containing a link to an annotation
 
 When a Web Publication is packaged using the Readium Packaging Format, it is up to the generator to embed the annotation file in the package or keep it remote.
 
-# 1. Best practices for Reading Systems
+# 4. Best practices for Reading Systems
 
 _This section is non-normative._ 
 
-## 1.1. Displaying filtered annotations
+## 4.1. Displaying filtered annotations
 
 Reading systems should enable filtering by color or by keyword. Filtering by color is not sufficient because imported annotations may have the same color as personal annotations, or both may have no colour to enable them to be disambiguated.  
 
 For instance, a user can display blue annotations only, or “teacher” annotations only. 
 
-## 1.1. Using multiple selectors
+## 4.2. Using multiple selectors
 
 It is recommended that Reading Systems export Progression Selectors, as they can be used for sorting annotations when no other sortable selector is present.
 
 When displaying an annotation, a Reading System is free to use the most precise Selector available. It will select an alternative Selector as a fallback in case the preferred one does not return a correct position in the publication: this can happen if the publication has been modified after the annotation has been created. 
 
-## 1.1. Exporting annotations as a detached file
+## 4.3. Exporting annotations as a detached file
 
 When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by keywords (multiple choice). “Annotations with no keyword” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually with no keyword) and let “teacher” annotations unexported. 
 
@@ -513,13 +513,13 @@ The file extention of the file MUST be `.ann`.
 
 The application may propose alternative formats at export time: a HTML or markdown format may be handy, as a list of annotations with human-friendly references to the location of each annotation. 
 
-## 1.1. Exporting annotations in a publication
+## 4.4. Exporting annotations in a publication
 
 When a user decides to export a publication from the Reading System, he SHOULD be proposed to embed the annotations associated with the publication. 
 
 If the user decides to embed annotations in a publication, he SHOULD be be proposed to filter the annotations by keywords (multiple choice).
 
-## 1.1. Importing annotations
+## 4.5. Importing annotations
 
 To simplify the association of annotations with a publication, a Reading System MUST offer a way to select a publication before selecting an annotation set. The drag&drop of an annotation set into a Reading System MAY also be proposed, but identifying the proper publication from the metadata in the annotation set is more complicated.
 
@@ -528,9 +528,9 @@ When importing an annotation set, a Reading System SHOULD display a message with
 Each annotation is uniquely identified. If during the import of an annotation set, one or more annotations are re-imported, the Reading System MUST offer to the user the choice to override existing annotations or abort the import of the annotation set. 
 
 
-# 1. JSON Schemas
+# 5. JSON Schemas
 
-# 1. References
+# 6. References
 
 Open Annotation in EPUB, 2015: https://idpf.org/epub/oa/ 
 
