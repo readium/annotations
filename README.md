@@ -491,9 +491,9 @@ _This section is non-normative._
 
 ## 4.1. Displaying filtered annotations
 
-Reading systems should enable filtering by color or by keyword. Filtering by color is not sufficient because imported annotations may have the same color as personal annotations, or both may have no colour to enable them to be disambiguated.  
+Filtering by color is not sufficient because imported annotations may have the same colour as personal annotations.
 
-For instance, a user can display blue annotations only, or “teacher” annotations only. 
+Reading systems should enable filtering by color, highlight mode, keyword and creator. For instance, a user can display "blue" annotations only, or “teacher” annotations only. Filtering on multiple criterias is a plus. 
 
 ## 4.2. Using multiple selectors
 
@@ -527,6 +527,15 @@ When importing an annotation set, a Reading System SHOULD display a message with
 
 Each annotation is uniquely identified. If during the import of an annotation set, one or more annotations are re-imported, the Reading System MUST offer to the user the choice to override existing annotations or abort the import of the annotation set. 
 
+## 4.6. Dealing with colors
+
+This document specifies a closed set of six colors, chosen because of their large support in well-known reading systems. But most existing reading apps offer a smaller set to their users.
+
+If an application imports annotations with a color it does not support, it should display these annotations with a neutral color. The recommended neutral color is grey.
+
+Some applications may support colors that are not in the set defined by this specification (e.g. brown). In this case, a 1-to-1 substitution at export time is required (e.g. brown to orange). 
+
+Note: we didn't spot applications which offer more than six annotation colors.
 
 # 5. JSON Schemas
 
