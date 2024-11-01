@@ -191,13 +191,15 @@ Sample 5: A text segment represented as an EPUB CFI:
 }
 ```
 
-##### 1.3.2.4. Range Selector + CSS Selector + Plain Text Selector
+##### 1.3.2.4. Range Selector + CSS Selector + XPath Selector + Plain Text Selector
 
-A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two CSS Selectors. Each CSSSelector references the parent element of the text node containing start or end character of the annotation. It is refined by a Character Fragment Selector which selects the start or end character precisely (zero-based).
+A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two CSS Selectors. Each CSSSelector references the parent element of the text node containing the annotation start or end character. It is optionally refined by an XPath Selector which points a specific text node in the parent element, itself refined by a Character Fragment Selector which selects a character in this text node.
 
-Note: such construct can be mapped from and to a DOM Range with no complex computing. See https://www.npmjs.com/package/css-selector-generator for an example of open-source codebase generating CSS Selectors from a Node; document.querySelector() returns the first Element Node within the document that matches the specified CSS selector.
+The use of XPathSelector is constrained to the selection of a text node among children of the element node selected by the CSS Selector. It is not included in the construct if the parent element has only one child text node. 
 
-Sample 5: A text segment represented as two Text Position Selectors in CSS Selectors. The fragment selector identify the position *after* the 100th character (as Unicode code point) of the startSelector, and after the 25th character of the endSelector; note that the start and end selectors are not at the same level of the DOM tree:
+Note: such construct can be mapped from and to a DOM Range using simple code. See https://www.npmjs.com/package/css-selector-generator for an example of open-source codebase generating CSS Selectors from a Node; For getting a Node from a CSS Selector, developers will use document.querySelector().
+
+Sample 6: A text segment represented as two CSS Selectors; note that the start and end selectors are not at the same level of the DOM tree:
 
 ```json
 {
@@ -208,28 +210,80 @@ Sample 5: A text segment represented as two Text Position Selectors in CSS Selec
       "type": "CSSSelector",
       "value": "#intro > p:nth-child(2)",
       "refinedBy": {
-        "type": "FragmentSelector",	 
-        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
-        "value": "char=100"
+        "type": "XPathSelector",	 
+        "value": "text()[2]",
+        "refinedBy": {
+          "type": "FragmentSelector",	 
+          "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+          "value": "char=5"
+        },
       },
+    },
     "endSelector": {
       "type": "CSSSelector",
-      "value": "#intro > p:nth-child(5) > em:nth-child(1)",
+      "value": "#intro > p:nth-child(3) > em",
       "refinedBy": {
         "type": "FragmentSelector",	 
         "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
-        "value": "char=25"
+        "value": "char=4"
       }
     }
   ]
 }
 ```
 
-##### 1.3.2.5. CSS Selector
+This selects "j" from "jumps" as start selector and "e" from "white" as end selector.  
+
+```html 
+<div id="intro">
+  <p>Some text.</p>
+  <p>The quick <em>brown</em> fox jumps over the lazy dog.</p>
+  <p>The lazy <em>white</em> dog sleeps with the crazy fox.</p>
+</div>
+```
+
+##### 1.3.2.5. Range Selector + XPath Selector + Plain Text Selector
+
+A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two XPath Selectors. Each XPath Selector references the text node containing the annotation start or end character. It is refined by a Character Fragment Selector which selects a character in this text node.
+
+Note: such construct is simpler than the one using an CSS Selector + an XPath Selector, but it is to be tested for performance.
+
+Sample 7: A text segment represented as two XPath Selectors; note that the start and end selectors are not at the same level of the DOM tree:
+
+```json
+{
+  "selector": [
+    {
+    "type": "RangeSelector",	 
+    "startSelector": {
+      "type": "XPathSelector",
+      "value": "/div/p[2]/text()[2]",
+      "refinedBy": {
+        "type": "FragmentSelector",	 
+        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+        "value": "char=5"
+      },
+    },
+    "endSelector": {
+      "type": "CSSSelector",
+      "value": "/div/p[3]/em/text()",
+      "refinedBy": {
+        "type": "FragmentSelector",	 
+        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+        "value": "char=4"
+      }
+    }
+  ]
+}
+```
+
+The resulting selection is the same as in example 6.
+
+##### 1.3.2.6. CSS Selector
 
 If the annotation is relative to an image, an audio or video clip or any other element in the DOM that does not correspond to a text fragment, a CSS Selector can identify this object. The annotation is therefore contextual to the HTML resource, not directly attached to the media resource. 
 
-Sample 6: A CSS Selectors identifies the 5th img in the resource.
+Sample 8: A CSS Selectors identifies the 5th img in the resource.
 
 ```json
 {
@@ -242,11 +296,11 @@ Sample 6: A CSS Selectors identifies the 5th img in the resource.
 }
 ```
 
-##### 1.3.2.6. Spatial Media Fragment Selector
+##### 1.3.2.7. Spatial Media Fragment Selector
 
 If the resource is an image (i.e. in a Divina publication), it is possible to identify an area of interest using a Spatial Media FragmentSelector.
 
-Sample 7: An image fragment identified by a Rectangular Media FragmentSelector.
+Sample 9: An image fragment identified by a Rectangular Media FragmentSelector.
 
 ```json
 {
@@ -260,11 +314,11 @@ Sample 7: An image fragment identified by a Rectangular Media FragmentSelector.
 }
 ```
 
-##### 1.3.2.7. Temporal Media Fragment Selector
+##### 1.3.2.8. Temporal Media Fragment Selector
 
 If the resource is an audio file (i.e. in an Audiobook), it is possible to identify an area of interest using a Temporal Media FragmentSelector.
 
-Sample 7: An audio fragment identified by a Temporal Media FragmentSelector.
+Sample 10: An audio fragment identified by a Temporal Media FragmentSelector.
 
 ```json
 {
@@ -278,11 +332,11 @@ Sample 7: An audio fragment identified by a Temporal Media FragmentSelector.
 }
 ```
 
-##### 1.3.2.8. PDF Selector
+##### 1.3.2.9. PDF Selector
 
 If the publication is in PDF format, it is possible to identify an area of interest using a PDF FragmentSelector.
 
-Sample 8: A rectangulare fragment identified in page 10 by a PDF FragmentSelector:
+Sample 11: A rectangulare fragment identified in page 10 by a PDF FragmentSelector:
 
 ```json
 {
@@ -296,13 +350,13 @@ Sample 8: A rectangulare fragment identified in page 10 by a PDF FragmentSelecto
 }
 ```
 
-##### 1.3.2.9. ProgressionSelector
+##### 1.3.2.10. ProgressionSelector
 
 A ProgressionSelector, which is not defined in the W3C Annotation Model, contains a decimal value representing the annotation's position as a percentage of the total size of the resource.
 
 While such positioning is imprecise and does not propertly identifies a fragment, it is useful as a way to order annotations in a list, and help positioning the annotation near the corresponding fragment if other selectors fail.
 
-Sample 9: A ProgressionSelector indication that the annotation is positioned just after the middle of the resource:
+Sample 12: A ProgressionSelector indication that the annotation is positioned just after the middle of the resource:
 
 ```json
 {
