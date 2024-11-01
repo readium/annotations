@@ -205,27 +205,28 @@ Sample 6: A text segment represented as two CSS Selectors; note that the start a
 {
   "selector": [
     {
-    "type": "RangeSelector",	 
-    "startSelector": {
-      "type": "CSSSelector",
-      "value": "#intro > p:nth-child(2)",
-      "refinedBy": {
-        "type": "XPathSelector",	 
-        "value": "text()[2]",
+      "type": "RangeSelector",	 
+      "startSelector": {
+        "type": "CSSSelector",
+        "value": "#intro > p:nth-child(2)",
+        "refinedBy": {
+          "type": "XPathSelector",	 
+          "value": "text()[2]",
+          "refinedBy": {
+            "type": "FragmentSelector",	 
+            "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+            "value": "char=5"
+          },
+        },
+      },
+      "endSelector": {
+        "type": "CSSSelector",
+        "value": "#intro > p:nth-child(3) > em",
         "refinedBy": {
           "type": "FragmentSelector",	 
           "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
-          "value": "char=5"
-        },
-      },
-    },
-    "endSelector": {
-      "type": "CSSSelector",
-      "value": "#intro > p:nth-child(3) > em",
-      "refinedBy": {
-        "type": "FragmentSelector",	 
-        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
-        "value": "char=4"
+          "value": "char=4"
+        }
       }
     }
   ]
@@ -254,23 +255,24 @@ Sample 7: A text segment represented as two XPath Selectors; note that the start
 {
   "selector": [
     {
-    "type": "RangeSelector",	 
-    "startSelector": {
-      "type": "XPathSelector",
-      "value": "/div/p[2]/text()[2]",
-      "refinedBy": {
-        "type": "FragmentSelector",	 
-        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
-        "value": "char=5"
+      "type": "RangeSelector",	 
+      "startSelector": {
+        "type": "XPathSelector",
+        "value": "/div/p[2]/text()[2]",
+        "refinedBy": {
+          "type": "FragmentSelector",	 
+          "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+          "value": "char=5"
+        },
       },
-    },
-    "endSelector": {
-      "type": "CSSSelector",
-      "value": "/div/p[3]/em/text()",
-      "refinedBy": {
-        "type": "FragmentSelector",	 
-        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
-        "value": "char=4"
+      "endSelector": {
+        "type": "CSSSelector",
+        "value": "/div/p[3]/em/text()",
+        "refinedBy": {
+          "type": "FragmentSelector",	 
+          "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+          "value": "char=4"
+        }
       }
     }
   ]
