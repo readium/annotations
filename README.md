@@ -64,7 +64,7 @@ Sample 1: Core structure of a Readium annotation
 }
 ```
 
-### 1.1. Creator
+### 1.2. Creator
 
 The creator of an annotation is a person or an organisation. 
 
@@ -76,7 +76,7 @@ This document defines the following creator properties:
 | `type` | The RDF structure type. It MUST be "Person" or "Organization". | string | Yes |
 | `name`| The name of the creator.  | string | No |
 
-### 1.1. Target
+### 1.3. Target
 
 The target of an annotation associates the annotation to a specific segment of a resource in the current publication. 
 
@@ -90,7 +90,7 @@ This document defines three target sub-properties:
 
 A Target with no Selector indicates that the annotation is targeting the entire target resource. 
 
-#### 1.1.1. Source 
+#### 1.3.1. Source 
 
 The target resource MUST be identified by the URL of an existing resource in the publication.
 
@@ -114,45 +114,23 @@ Sample 2: the source of the annotation is the relative URL identifying an HTML d
 }
 ```
 
-#### 1.1.1. Selector
+#### 1.3.2. Selector
 
-An annotation refers to a segment of a resource, which is identified by one or more Selectors. The nature of the Selector and methods to describe segments are dependent on the type of resource.
+An annotation refers to a segment of a resource, which is identified by one or more Selectors. The nature of the Selector and methods to describe segments depend on the resource type. Providing more than one Selector allows an annotation software to choose the most accurate selector from those it can handle, and helps accomodating evolutions on the annotated resource. 
 
-An EPUB annotation:
+Annotation selectors are specified in [W3C Annotation Data Model, section Selectors](https://www.w3.org/TR/2017/REC-annotation-model-20170223/#selectors). This specification filters selectors deemed useful for annotating publications, and details the use of these selectors. 
 
-* MUST contain a TextQuoteSelector,
-* MAY contain an EPUB CFI FragmentSelector,
-* MAY contain a DomRangeSelector, 
-* MAY contain an HTML FragmentSelector,
-* MAY contain a ProgressionSelector.
+Note: In (X)HTML documents, reading systems locate a segment of text using a [DOM Range](https://dom.spec.whatwg.org/#interface-abstractrange). Textual Selectors are in practice serialized representations of such Range after normalisation.
 
-Warning: there is an open discussion about the selector to be used as _lingua franca_ for EPUB. TextQuoteSelectors are problematic when the content is protected by a DRM with character copy restrictions, but EPUB CFI are problematic for other reasons (complexity, lack of clarity of the specification, lack of support by reading systems and interoperability issues come first). We are studying TextFragments, but they seem problematic also. 
+##### 1.3.2.1. Text Quote Selector
 
-A PDF annotation:
+Important: This selector contains full annotated text segments and, therefore, must not be used when the content is protected by a DRM which limits the number of characters that may be copied.   
 
-* MUST contain a PDF FragmentSelector,
-* MAY contain a ProgressionSelector.
+Whitespaces present in the source document are preserved in the “prefix”, “exact”, and “suffix” segments and are represented as per the JSON Grammar (e.g. `\n`, `\t` etc.). 
 
-A Divina annotation:
+Note: There is no restriction on the amount of the preceding and following text that can be included in the selector, but this amount should be left as low as possible.
 
-* MAY contain a Rectangular Media FragmentSelector,
-* MAY contain a ProgressionSelector.
-
-Note: A Divina annotation with no Selector targets a whole image.  
-
-An Audiobook annotation:
-* MUST contain a Temporal Media FragmentSelector,
-* MAY contain a ProgressionSelector.
-
-##### 1.1.1.1. TextQuoteSelector
-
-The TextQuoteSelector is defined in https://www.w3.org/TR/annotation-model/#text-quote-selector. 
-
-This selector contains text segments and, therefore, must be used with caution when the content is protected by a DRM, which limits the number of characters that may be copied (e.g. clipboard).   
-
-Note: white spaces present in the source document are preserved in the “prefix”, “exact”, and “suffix” segments.
-
-Sample 3: A TextQuoteSelector contains the annotated text segment, a segment before and a segment after: 
+Sample 3: A text segment represented as a TextQuoteSelector.
 
 ```json
 {
@@ -167,50 +145,108 @@ Sample 3: A TextQuoteSelector contains the annotated text segment, a segment bef
 }
 ```
 
-##### 1.1.1.1. FragmentSelector
+##### 1.3.2.2. Text Fragment Selector
 
-A FragmentSelector (https://www.w3.org/TR/annotation-model/#fragment-selector) MUST conform to a specific type; the fragment type is indicated by the conformsTo property and the value property gives the fragment value.
+Important: this selector corresponds to a trend on the Web, to highlight text using a url-compliant and short fragment identifier. Mapping such a text fragment to / from a DOM Range is still uneasy, by lack of API.   
 
-In EPUB CFI fragment selectors, both the left-hand part (resource location in the publication) and the right-hand part (location of the annotation in the resource) are present.
+A TextFragmenSelector, which is not defined in the W3C Annotation Model, contains a shortened version of the annotated text segment and optional indication of the preceding and following fragments.
 
-PDF fragment selectors MUST conform to the [RFC 8118](https://www.rfc-editor.org/rfc/rfc8118).
+TextFragmenSelector is defined as a FragmentSelector conforming to the W3C Draft Community Group report named [URL Fragment Text Directives](https://wicg.github.io/scroll-to-text-fragment/).
 
-Note: the RFC 8118 obsolates the [RFC 3778](https://www.rfc-editor.org/rfc/rfc3778) initially defined by the W3C Annotatopn Model. 
+Note: the URI of the specification will certainly change in the future, aliases will therefore be needed in reading systems.  
 
-Sample 4: A couple of FragmentSelectors in an EPUB; the first selector is an idref, the second is an EPUB CFI:
+Sample 4: A text segment represented as a TextFragmentSelector.
 
 ```json
 {
   "selector": [
     {
     "type": "FragmentSelector",	 
-    "conformsTo": "http://tools.ietf.org/rfc/rfc3236",
-    "value": "footnote1"
-    },
+    "conformsTo": "https://wicg.github.io/scroll-to-text-fragment/",
+    "value": "#:~:text=an%20example,text%20fragment"
+    }
+  ]
+}
+```
+
+##### 1.3.2.3. EPUB CFI Selector
+
+Important: Our community lacks a reference and open-source implementation of EPUB CFI to DOM Range conversion (back and forth). Current implementations are not full interoperable.
+
+Note: Both the left-hand part (resource location in the publication) and the right-hand part (anchoring of the text fragment) must be present.
+
+To correspond to a text segment, the EPUB CFI expression MUST correspond to a range in the form epubcfi(P,S,E), where P represents a common Parent path, S and E the start and end subpaths respectively. 
+
+Sample 5: A text segment represented as an EPUB CFI:
+
+```json
+{
+  "selector": [
     {
     "type": "FragmentSelector",	 
     "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-    "value": "epubcfi(/6/4!/4[body01]/10[para05]/3:/10[para05]/10)"
+    "value": "epubcfi(/6/4[chap01ref]!/4[body01]/10[para05],/2/1:1,/3:4)"
     }
   ]
 }
 ```
 
-Sample 5: A PDF FragmentSelector:
+##### 1.3.2.4. Range Selector + CSS Selector + Plain Text Selector
+
+A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two CSS Selectors. Each CSSSelector references the parent element of the text node containing start or end character of the annotation. It is refined by a Character Fragment Selector which selects the start or end character precisely (zero-based).
+
+Note: such construct can be mapped from and to a DOM Range with no complex computing. See https://www.npmjs.com/package/css-selector-generator for an example of open-source codebase generating CSS Selectors from a Node; document.querySelector() returns the first Element Node within the document that matches the specified CSS selector.
+
+Sample 5: A text segment represented as two Text Position Selectors in CSS Selectors. The fragment selector identify the position *after* the 100th character (as Unicode code point) of the startSelector, and after the 25th character of the endSelector; note that the start and end selectors are not at the same level of the DOM tree:
 
 ```json
 {
   "selector": [
     {
-    "type": "FragmentSelector",	 
-    "conformsTo": "https://www.rfc-editor.org/rfc/rfc8118",
-    "value": "page=10&viewrect=50,50,650,480" 
+    "type": "RangeSelector",	 
+    "startSelector": {
+      "type": "CSSSelector",
+      "value": "#intro > p:nth-child(2)",
+      "refinedBy": {
+        "type": "FragmentSelector",	 
+        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+        "value": "char=100"
+      },
+    "endSelector": {
+      "type": "CSSSelector",
+      "value": "#intro > p:nth-child(5) > em:nth-child(1)",
+      "refinedBy": {
+        "type": "FragmentSelector",	 
+        "conformsTo": "http://tools.ietf.org/rfc/rfc5147",
+        "value": "char=25"
+      }
     }
   ]
 }
 ```
 
-Sample 6: A Divina Rectangular Media FragmentSelector.
+##### 1.3.2.5. CSS Selector
+
+If the annotation is relative to an image, an audio or video clip or any other element in the DOM that does not correspond to a text fragment, a CSS Selector can identify this object. The annotation is therefore contextual to the HTML resource, not directly attached to the media resource. 
+
+Sample 6: A CSS Selectors identifies the 5th img in the resource.
+
+```json
+{
+  "selector": [
+    {
+    "type": "CSSSelector",
+    "value": "img:nth-child(5)"
+    }
+  ]
+}
+```
+
+##### 1.3.2.6. Spatial Media Fragment Selector
+
+If the resource is an image (i.e. in a Divina publication), it is possible to identify an area of interest using a Spatial Media FragmentSelector.
+
+Sample 7: An image fragment identified by a Rectangular Media FragmentSelector.
 
 ```json
 {
@@ -224,7 +260,11 @@ Sample 6: A Divina Rectangular Media FragmentSelector.
 }
 ```
 
-Sample 7: An Audiobook Temporal Media FragmentSelector:
+##### 1.3.2.7. Temporal Media Fragment Selector
+
+If the resource is an audio file (i.e. in an Audiobook), it is possible to identify an area of interest using a Temporal Media FragmentSelector.
+
+Sample 7: An audio fragment identified by a Temporal Media FragmentSelector.
 
 ```json
 {
@@ -238,31 +278,29 @@ Sample 7: An Audiobook Temporal Media FragmentSelector:
 }
 ```
 
-##### 1.1.1.1. DomRangeSelector
+##### 1.3.2.8. PDF Selector
 
-A DomRangeSelector, not defined in the W3C Annotation Model, contains start and end container information; for each of these extremities, it provides a CSS Selector, a child text node index and an offset. 
+If the publication is in PDF format, it is possible to identify an area of interest using a PDF FragmentSelector.
 
-Sample 8: A DomRangeSelector:
+Sample 8: A rectangulare fragment identified in page 10 by a PDF FragmentSelector:
 
 ```json
 {
   "selector": [
     {
-    "type": "DomRangeSelector",
-    "startContainerElementCssSelector": ".calibre_3",
-    "startContainerChildTextNodeIndex": 0,
-    "startOffset": 1066,
-    "endContainerElementCssSelector": ".calibre_3",
-    "endContainerChildTextNodeIndex": 0,
-    "endOffset": 1095
+    "type": "FragmentSelector",	 
+    "conformsTo": "https://www.rfc-editor.org/rfc/rfc8118",
+    "value": "page=10&viewrect=50,50,650,480" 
     }
   ]
 }
 ```
 
-##### 1.1.1.1. ProgressionSelector
+##### 1.3.2.9. ProgressionSelector
 
-A ProgressionSelector, which is not defined in the W3C Annotation Model, contains a decimal value representing the annotation's position as a percentage of the total size of the resource.  
+A ProgressionSelector, which is not defined in the W3C Annotation Model, contains a decimal value representing the annotation's position as a percentage of the total size of the resource.
+
+While such positioning is imprecise and does not propertly identifies a fragment, it is useful as a way to order annotations in a list, and help positioning the annotation near the corresponding fragment if other selectors fail.
 
 Sample 9: A ProgressionSelector indication that the annotation is positioned just after the middle of the resource:
 
@@ -277,7 +315,7 @@ Sample 9: A ProgressionSelector indication that the annotation is positioned jus
 }
 ```
 
-#### 1.1.2. Meta
+#### 1.3.3. Meta
 
 Meta information MAY be added to an annotation as “breadcrumbs”,  to ease the display of contextual information relative to the global position of the annotation in the publication.
 
@@ -288,7 +326,7 @@ The meta property contains:
 | `headings`| Ancestor headings of the annotation. | Array of Heading objects | No |
 | `page`| Page of the publication containing the annotation. It may be either a synthetic page or a print equivalent. It is essentially a visual indicator. | string | No |
 
-##### 1.1.2.1. Headings
+##### 1.3.3.1. Headings
 
 The Headings object contains:
 
@@ -324,7 +362,7 @@ Sample 10: Meta information contains ancestor headings and a page number:
 }
 ```
 
-### 1.2. Body
+### 1.4. Body
 
 The body of an annotation contains plain text, style, and an optional keyword. 
 
