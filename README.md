@@ -191,9 +191,9 @@ Sample 5: A text segment represented as an EPUB CFI:
 }
 ```
 
-##### 1.3.2.4. Range Selector + CSS Selector + XPath Selector + Plain Text Selector
+##### 1.3.2.4. Range Selector + CSS Selector + XPath Selector + Character Position
 
-A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two CSS Selectors. Each CSSSelector references the parent element of the text node containing the annotation start or end character. It is optionally refined by an XPath Selector which points a specific text node in the parent element, itself refined by a Character Fragment Selector which selects a character in this text node.
+A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two CSS Selectors. Each CSSSelector references the parent element of the text node containing the annotation start or end character. It is optionally refined by an XPath Selector which points a specific text node in the parent element, itself refined by a Character Position Fragment Selector which selects a character in this text node.
 
 The use of XPathSelector is constrained to the selection of a text node among children of the element node selected by the CSS Selector. It is not included in the construct if the parent element has only one child text node. 
 
@@ -243,9 +243,9 @@ This selects "j" from "jumps" as start selector and "e" from "white" as end sele
 </div>
 ```
 
-##### 1.3.2.5. Range Selector + XPath Selector + Plain Text Selector
+##### 1.3.2.5. Range Selector + XPath Selector + Character Position
 
-A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two XPath Selectors. Each XPath Selector references the text node containing the annotation start or end character. It is refined by a Character Fragment Selector which selects a character in this text node.
+A Range Selector identifies the beginning and the end of the selection by using other Selectors. It contains two XPath Selectors. Each XPath Selector references the text node containing the annotation start or end character. It is refined by a Character Position Fragment Selector which selects a character in this text node.
 
 Note: such construct is simpler than the one using an CSS Selector + an XPath Selector, but it is to be tested for performance.
 
