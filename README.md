@@ -363,6 +363,8 @@ If the resource is an image (i.e. in a Divina publication), it is possible to id
 
 The SpatialSelector is the equivalent of a FragmentSelector conforming to http://www.w3.org/TR/media-frags/, as defined in the W3C Annotation Model; the latter is more verbose and therefore deprecated.
 
+Note: this selector is also adequate for PDF publications, where the page is already set via a source property. 
+
 Sample 9.1: An image fragment identified by a Spatial Selector.
 
 ```json
@@ -418,42 +420,6 @@ Anti-pattern 10.2: this would be correct as per the W3C Annotation Model but thi
     "type": "FragmentSelector",	 
     "conformsTo": "http://www.w3.org/TR/media-frags/",
     "value": "t=30,60" 
-    }
-  ]
-}
-```
-
-##### 1.3.2.9. PDF Selector
-
-If the publication is in PDF format, it is possible to identify an area of interest using a PDF FragmentSelector.
-
-The PDFSelector is the equivalent of a FragmentSelector conforming to http://www.w3.org/TR/media-frags/, as defined in the W3C Annotation Model; the latter is more verbose and therefore deprecated.
-
-
-Sample 11: A rectangulare fragment identified in page 10 by a PDF FragmentSelector:
-
-```json
-{
-  "selector": [
-    {
-    "type": "PDFSelector",	 
-    "page": 10,
-    "viewrect": "50,50,650,480"
-    }
-  ]
-}
-```
-
-
-Anti-pattern 11.2: this would be correct as per the W3C Annotation Model but this would be more verbose:
-
-```json
-{
-  "selector": [
-    {
-    "type": "FragmentSelector",	 
-    "conformsTo": "https://www.rfc-editor.org/rfc/rfc8118",
-    "value": "page=10&viewrect=50,50,650,480" 
     }
   ]
 }
