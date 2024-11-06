@@ -225,7 +225,8 @@ The TextNodeSelector is the equivalent of an XPathSelector selecting a specific 
 
 The CharacterSelector is similar to a FragmentSelector conforming to http://tools.ietf.org/rfc/rfc5147, as defined in the W3C Annotation Model; the latter is more verbose and therefore deprecated. The disrepency between both selectors comes from the fact that a CharacterSelector is counting code units, not code points.  
 
-Note: counting code units is quite simpler for JS developers 
+Note: counting code units is quite simpler for JS developers.
+
 Note: such construct can be mapped from and to a DOM Range using simple code. See https://www.npmjs.com/package/css-selector-generator for an example of open-source codebase generating CSS Selectors from a Node; For getting a Node from a CSS Selector, developers will use document.querySelector().
 
 Sample 6.1: A text segment represented as two CSS Selectors; note that the start and end selectors are not at the same level of the DOM tree:
