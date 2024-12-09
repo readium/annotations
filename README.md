@@ -130,7 +130,7 @@ Note: There is no restriction on the amount of the preceding and following text 
 
 Important: This selector contains full annotated text segments and, therefore, must not be used when the publication is protected by a DRM which limits the number of characters that may be copied.   
 
-Implementation: This selector is exported from Thorium Reader 3.1 if the publication is free from a DRM. 
+Implementation: This selector is exported from Thorium Reader 3.1 if the publication is in EPUB or Web Publication format, and free from any DRM. 
 
 Sample 3: A text segment represented as a TextQuoteSelector.
 
@@ -159,7 +159,7 @@ Note: Both the left-hand part (resource location in the publication) and the rig
 
 Important: The reading system community lacks a reference and open-source implementation of EPUB CFI to DOM Range conversion (back and forth). Current implementations are not fully interoperable, essentially because some implementations use unicode code points instead of code units. Our implementation assumes the use of code units.
 
-Implementation: This selector is exported from and processed by Thorium Reader 3.1. 
+Implementation: This selector is exported from and processed by Thorium Reader 3.1 when the publication is in EPUB format. 
 
 Sample 4: A text segment represented as an EPUB CFI:
 
@@ -188,7 +188,7 @@ It is used to select an image, an audio or video clip or any other element in th
 
 Note: such construct can be mapped from and to a DOM Range using simple code. See https://www.npmjs.com/package/css-selector-generator for an example of open-source codebase generating CSS Selectors from a Node; For getting a Node from a CSS Selector, developers will use document.querySelector().
 
-Implementation: Thorium Reader 3.1 does not allow the selection of a media resource. This should be added in version 3.2.
+Implementation: Thorium Reader 3.1 does not allow the selection of a media resource. This will be added in a future version.
 
 Sample 5: A CSS Selector points at the 5th img in the resource.
 
@@ -211,7 +211,7 @@ A TextPositionSelector describes a range of text by recording the start and end 
 
 In an HTML resource, rebuilding a DOM range from a purely textual range using tree walking is cumbersome and is not an optimal solution. Such a selector can only be efficient if it is used a refinement of a CSS Selector that targets the closest common ancestor of the element nodes containing the start and end characters, and if the segment of text is small enough. The use of the closest common ancestor element also makes the selector more robust against evolutions of the HTML resource. 
 
-Implementation: This selector is exported from and processed by Thorium Reader 3.1. 
+Implementation: This selector is exported from and processed by Thorium Reader 3.1 if the publication is in EPUB or Web Publication format. 
 
 Sample 6: A CSS Selector refined by a Text Position Selector:
 
@@ -241,32 +241,6 @@ This selects "q" from "quick" as start position and "x" from "fox" as end positi
 </div>
 ```
 
-##### 1.3.2.5. ThoriumDomRangeSelector
-
-This selector acts as an experiment; its goal is to obtain an optimized mapping between annotation selectors and DOM ranges. A text segment is represented as two triples. Each triple is formed of a CSS selector, a text node index and a character offset in unicode code units. The use of a text node index completing a CSS selector is due to the fact that CSS selectors can only target elements nodes, not text nodes. If an element contains mixed content, selecting a text node by its index is necessary to simplify the geenration of the DOM Range `startContainer` and `endContainer` properties. The offset is directly copied to the DOM Range offset (also expressed in code units).  
-
-A more expressive format, using the elegant but more verbose `refinedBy` mechanism offered by the W3C Annotation Data Model, may be defined in the course of the study programmed by the W3C Publishing Maintenance WG. If such variant is defined, it will replace this experiment in Thorium Reader.
-
-Implementation: This selector is exported from and processed by Thorium Reader 3.1. 
-
-Sample 7: An experimental ThoriumDomRangeSelector:
-
-```json
-{
-  "selector": [
-    {
-      "type": "ThoriumDomRangeSelector",	 
-      "startCssSelector": "tr:nth-child(22) > td:nth-child(6)",
-      "startTextNodeIndex": 0,
-      "startOffset": 183,
-      "endCssSelector": "tr:nth-child(22) > td:nth-child(7)",
-      "endTextNodeIndex": 0,
-      "endOffset": 55
-    }
-  ]
-}
-```
-
 #### 1.3.3. Meta
 
 Meta information MAY be added to an annotation as “breadcrumbs”,  to ease the display of contextual information relative to the global position of the annotation in the publication.
@@ -287,7 +261,7 @@ The Headings object contains:
 | `level`| Heading level. | number | No |
 | `txt`| Heading title. | string | No |
 
-Sample 8: Meta information contains ancestor headings and a page number:
+Sample 7: Meta information contains ancestor headings and a page number:
 
 ```json
 {
@@ -333,7 +307,7 @@ The body property contains:
 
 Note: read “Best practices for Reading Systems” about using a keyword in an annotation. 
 
-Sample 9: An annotation Body. 
+Sample 8: An annotation Body. 
 
 ```json
 {
@@ -395,7 +369,7 @@ The About object contains information relative to the publication. Such metadata
 
 Note: all properties defined above are from the Dublin Core vocabulary, referenced in the Web Annotation Data Model. 
 
-Sample 10: An AnnotationSet containing one annotation. 
+Sample 9: An AnnotationSet containing one annotation. 
 
 ```json
 {
@@ -451,7 +425,7 @@ The OPTIONAL `annotations.ann` file in the META-INF directory holds an Annotatio
 
 The JSON file holding an AnnotationSet MUST be represented as a link object in the `links` collection, with an `annotations` relation. 
 
-Sample 11: A Readium Web Publication Manifest containing a link to an annotations file.
+Sample 10: A Readium Web Publication Manifest containing a link to an annotations file.
 
 ```json
 {
@@ -480,8 +454,6 @@ When a Web Publication is packaged using the Readium Packaging Format, it is up 
 _This section is non-normative._ 
 
 ## 4.1. Displaying filtered annotations
-
-Filtering by colour is not sufficient because imported annotations may have the same colour as personal annotations.
 
 Reading systems should enable filtering by colour, highlight mode, keyword and creator. For instance, a user can display "blue" annotations only, or “teacher” annotations only. Filtering on multiple criterias is a plus. 
 
