@@ -2,6 +2,8 @@
 
 This document details proposals for an evolution of the specification of selectors in the [W3C Annotation Data Model](https://www.w3.org/TR/annotation-model/)). 
 
+It complements the [Readium Annotations specification](./README.md), which so far introduces serializations totally compatible with the W3C Annotation Data Model (plus a Thorium experiment).
+
 ## Create a ProgressionSelector
 
 A ProgressionSelector contains a decimal value representing the annotation's position as a percentage of the total size of the resource.

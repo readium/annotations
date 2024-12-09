@@ -4,6 +4,10 @@ User annotations convey textual information about a resource segment in a public
 
 This document defines a syntax for Annotation Documents, serialised in JSON and ready for embedding in a packaged publication (especially EPUB), shared as a file or referenced in a [Readium Web Publication Manifest](https://readium.org/webpub-manifest).
 
+This document defines a profile of the [W3C Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) by defining a subset of the properties allowed in this model and adding a few properties. 
+
+It is complemented by a [proposal for new Selectors](./Selectors.md); these new Selectors should be discussed in the context of a new version of the W3C Annotation Data Model.  
+
 **Editors:**
 
 * Laurent Le Meur
@@ -25,10 +29,6 @@ This document defines a syntax for Annotation Documents, serialised in JSON and 
 ## 1. Annotation 
 
 ### 1.1. Annotation Object
-
-Annotations are modelled after the [W3C Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) and adopt its JSON-LD syntax. 
-
-This document defines a profile of the W3C Annotation Data Model by defining a subset of the properties allowed in this model and adding a few properties. 
 
 This document retains the following annotation properties from the W3C Annotation Data Model: 
 
@@ -487,7 +487,7 @@ Reading systems should enable filtering by colour, highlight mode, keyword and c
 
 ## 4.2. Using multiple selectors
 
-It is recommended that Reading Systems export Progression Selectors, as they can be used for sorting annotations when no other sortable selector is present.
+It is recommended that Reading Systems export EPUB CFI Selectors, as they can be used for sorting annotations when no other sortable selector is present.
 
 When displaying an annotation, a Reading System is free to use the most precise Selector available. It will select an alternative Selector as a fallback in case the preferred one does not return a correct position in the publication: this can happen if the publication has been modified after the annotation has been created. 
 
