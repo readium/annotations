@@ -149,15 +149,15 @@ Sample 3: A text segment represented as a TextQuoteSelector.
 
 ##### 1.3.2.2. EPUB CFI Selector
 
+Reference in the W3C Annotation Data Model: [EPUB CFI Selector](https://www.w3.org/TR/annotation-model/#fragment-selector)
+
 This Selector describes a range of text in an EPUB resource by expressing a starting and ending character using the [EPUB Canonical Frangment Identifier](http://www.idpf.org/epub/linking/cfi/epub-cfi.html) syntax.  
 
 To correspond to a text segment, the EPUB CFI expression MUST correspond to a range in the form epubcfi(P,S,E), where P represents a common Parent path, S and E the start and end subpaths respectively. 
 
 Note: Both the left-hand part (resource location in the publication) and the right-hand part (anchoring of the text fragment) of the path must be present.
 
-Important: The reading system community lacks a reference and open-source implementation of EPUB CFI to DOM Range conversion (back and forth). Current implementations are not fully interoperable, essentially because of a bad interpretation of the use of Unicode code units vs code points. Our implementation assumes the use of code units.
-
-The EPUBCFISelector is the equivalent of a FragmentSelector conforming to http://www.idpf.org/epub/linking/cfi/epub-cfi.html, as defined in the W3C Annotation Model; the latter is more verbose and therefore deprecated.
+Important: The reading system community lacks a reference and open-source implementation of EPUB CFI to DOM Range conversion (back and forth). Current implementations are not fully interoperable, essentially because some implementations use unicode code points instead of code units. Our implementation assumes the use of code units.
 
 Implementation: This selector is exported from and processed by Thorium Reader 3.1. 
 
@@ -175,15 +175,22 @@ Sample 4: A text segment represented as an EPUB CFI:
 }
 ```
 
+Note: It would be more efficient to create a simpler EPUBCFISelector, as an equivalent of the FragmentSelector conforming to http://www.idpf.org/epub/linking/cfi/epub-cfi.html defined in the W3C Annotation Model, which would avoid expressing the "epubcfi()" part and the left part of the CFI which relates to the resource already selected by the "source" property of the annotation.
+
+
 ##### 1.3.2.3. CSS Selector
+
+Reference in the W3C Annotation Data Model: [CSS Selector](https://www.w3.org/TR/annotation-model/#css-selector)
 
 This Selector describes an HTML element in an EPUB resource using the [CSS Selectors Level 3](https://www.w3.org/TR/selectors-3/) syntax.  
 
-If not present in a Range Selector, it is used to select an image, an audio or video clip or any other element in the DOM that does not correspond to a text fragment. The annotation is therefore contextual to the HTML resource, not directly attached to the media resource. 
+It is used to select an image, an audio or video clip or any other element in the DOM that does not correspond to a text fragment. The annotation is therefore contextual to the HTML resource, not directly attached to the media resource.
 
-Implementation: Thorium Reader 3.1 does not allow the selection of a media resource. 
+Note: such construct can be mapped from and to a DOM Range using simple code. See https://www.npmjs.com/package/css-selector-generator for an example of open-source codebase generating CSS Selectors from a Node; For getting a Node from a CSS Selector, developers will use document.querySelector().
 
-Sample 5: A CSS Selectors identifies the 5th img in the resource.
+Implementation: Thorium Reader 3.1 does not allow the selection of a media resource. This should be added in version 3.2.
+
+Sample 5: A CSS Selector points at the 5th img in the resource.
 
 ```json
 {
@@ -196,17 +203,17 @@ Sample 5: A CSS Selectors identifies the 5th img in the resource.
 }
 ```
 
-##### 1.3.2.4. TextPositionSelector
+##### 1.3.2.4. CSSSelector + TextPositionSelector
 
-This Selector describes a range of text by recording the start and end positions of the selection in the stream. Position 0 would be immediately before the first character, position 1 would be immediately before the second character, and so on. The start character is thus included in the list, but the end character is not.
+References in the W3C Annotation Data Model: [CSS Selector](https://www.w3.org/TR/annotation-model/#css-selector), [Text Position Selector](https://www.w3.org/TR/annotation-model/#text-position-selector), [Refinement of Selection](https://www.w3.org/TR/annotation-model/#refinement-of-selection)
 
-The W3C Annotation Data Model specifies that the selection of the text MUST be in terms of **unicode code points** (the "character number"), not in terms of code units (that number expressed using a selected data type). Selections SHOULD NOT start or end in the middle of a grapheme cluster. The selection MUST be based on the logical order of the text, rather than the visual order, especially for bidirectional text.
+A TextPositionSelector describes a range of text by recording the start and end positions of the selection in the stream. Position 0 would be immediately before the first character, position 1 would be immediately before the second character, and so on. The start character is thus included in the list, but the end character is not. The W3C Annotation Data Model specifies that the selection of the text MUST be in terms of **unicode code points** (the "character number"), not in terms of code units (that number expressed using a selected data type). Selections SHOULD NOT start or end in the middle of a grapheme cluster. The selection MUST be based on the logical order of the text, rather than the visual order, especially for bidirectional text.
 
-In an HTML resource, rebuilding a DOM range from a purely textual range using tree walking is cumbersome. Such a selector can only be efficient if it is used a refinement of a CSS Selector that targets the parent of the element nodes containing the start and end characters, and the segment of text is small enough. The identification of the ancestor element also makes the selector more robust against evolutions of the resource. 
+In an HTML resource, rebuilding a DOM range from a purely textual range using tree walking is cumbersome and is not an optimal solution. Such a selector can only be efficient if it is used a refinement of a CSS Selector that targets the closest common ancestor of the element nodes containing the start and end characters, and if the segment of text is small enough. The use of the closest common ancestor element also makes the selector more robust against evolutions of the HTML resource. 
 
 Implementation: This selector is exported from and processed by Thorium Reader 3.1. 
 
-Sample 6: A text segment represented as two CSS Selectors; note that the start and end selectors are not at the same level of the DOM tree:
+Sample 6: A CSS Selector refined by a Text Position Selector:
 
 ```json
 {
@@ -234,6 +241,32 @@ This selects "q" from "quick" as start position and "x" from "fox" as end positi
 </div>
 ```
 
+##### 1.3.2.5. ThoriumDomRangeSelector
+
+This selector acts as an experiment; its goal is to obtain an optimized mapping between annotation selectors and DOM ranges. A text segment is represented as two triples. Each triple is formed of a CSS selector, a text node index and a character offset in unicode code units. The use of a text node index completing a CSS selector is due to the fact that CSS selectors can only target elements nodes, not text nodes. If an element contains mixed content, selecting a text node by its index is necessary to simplify the geenration of the DOM Range `startContainer` and `endContainer` properties. The offset is directly copied to the DOM Range offset (also expressed in code units).  
+
+A more expressive format, using the elegant but more verbose `refinedBy` mechanism offered by the W3C Annotation Data Model, may be defined in the course of the study programmed by the W3C Publishing Maintenance WG. If such variant is defined, it will replace this experiment in Thorium Reader.
+
+Implementation: This selector is exported from and processed by Thorium Reader 3.1. 
+
+Sample 7: An experimental ThoriumDomRangeSelector:
+
+```json
+{
+  "selector": [
+    {
+      "type": "ThoriumDomRangeSelector",	 
+      "startCssSelector": "tr:nth-child(22) > td:nth-child(6)",
+      "startTextNodeIndex": 0,
+      "startOffset": 183,
+      "endCssSelector": "tr:nth-child(22) > td:nth-child(7)",
+      "endTextNodeIndex": 0,
+      "endOffset": 55
+    }
+  ]
+}
+```
+
 #### 1.3.3. Meta
 
 Meta information MAY be added to an annotation as “breadcrumbs”,  to ease the display of contextual information relative to the global position of the annotation in the publication.
@@ -254,7 +287,7 @@ The Headings object contains:
 | `level`| Heading level. | number | No |
 | `txt`| Heading title. | string | No |
 
-Sample 10: Meta information contains ancestor headings and a page number:
+Sample 8: Meta information contains ancestor headings and a page number:
 
 ```json
 {
@@ -300,7 +333,7 @@ The body property contains:
 
 Note: read “Best practices for Reading Systems” about using a keyword in an annotation. 
 
-Sample 11: An annotation Body. 
+Sample 9: An annotation Body. 
 
 ```json
 {
@@ -362,7 +395,7 @@ The About object contains information relative to the publication. Such metadata
 
 Note: all properties defined above are from the Dublin Core vocabulary, referenced in the Web Annotation Data Model. 
 
-Sample 12: An AnnotationSet containing one annotation. 
+Sample 10: An AnnotationSet containing one annotation. 
 
 ```json
 {
@@ -418,7 +451,7 @@ The OPTIONAL `annotations.ann` file in the META-INF directory holds an Annotatio
 
 The JSON file holding an AnnotationSet MUST be represented as a link object in the `links` collection, with an `annotations` relation. 
 
-Sample 13: A Readium Web Publication Manifest containing a link to an annotations file.
+Sample 11: A Readium Web Publication Manifest containing a link to an annotations file.
 
 ```json
 {
