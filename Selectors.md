@@ -4,24 +4,61 @@ This document details proposals for an evolution of the specification of selecto
 
 It complements the [Readium Annotations specification](./README.md), which so far introduces serializations totally compatible with the W3C Annotation Data Model (plus a Thorium experiment).
 
-## Create a ProgressionSelector
+## Use the EPUB CFI Selector? 
 
-A ProgressionSelector contains a decimal value representing the annotation's position as a percentage of the total size of the resource.
+Reference in the W3C Annotation Data Model: [EPUB CFI Selector](https://www.w3.org/TR/annotation-model/#fragment-selector)
 
-While such positioning is imprecise and does not propertly identifies a fragment, it is useful as a way to order annotations in a list, and help positioning the annotation near the corresponding fragment if other selectors fail.
+This Selector describes a range of text in an EPUB resource by expressing a starting and ending character using the [EPUB Canonical Frangment Identifier](http://www.idpf.org/epub/linking/cfi/epub-cfi.html) syntax.  
 
-Sample: This ProgressionSelector indicates that the annotation is positioned just after the middle of the resource:
+To correspond to a text segment, the EPUB CFI expression MUST correspond to a range in the form epubcfi(P,S,E), where P represents a common Parent path, S and E the start and end subpaths respectively. 
+
+Note: Both the left-hand part (resource location in the publication) and the right-hand part (anchoring of the text fragment) of the path must be present.
+
+Important: The reading system community lacks a reference and open-source implementation of EPUB CFI to DOM Range conversion (back and forth). Current implementations are not fully interoperable, essentially because some implementations use unicode code points instead of code units. Our implementation assumes the use of code units.
+
+Implementation: This selector is exported from and processed by Thorium Reader 3.1 when the publication is in EPUB format. 
+
+Sample 4: A text segment represented as an EPUB CFI:
 
 ```json
 {
   "selector": [
     {
-    "type": "ProgressionSelector",	 
-    "value": 0.534234255
+    "type": "FragmentSelector",	 
+    "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+    "value": "epubcfi(/6/4!/4[body01]/10[para05],/2/1:1,/3:4)"
     }
   ]
 }
 ```
+
+Note: It would be more efficient to create a simpler EPUBCFISelector, as an equivalent of the FragmentSelector conforming to http://www.idpf.org/epub/linking/cfi/epub-cfi.html defined in the W3C Annotation Model, which would avoid expressing the "epubcfi()" part and the left part of the CFI which relates to the resource already selected by the "source" property of the annotation. See below. 
+
+## Use the CSS Selector
+
+Reference in the W3C Annotation Data Model: [CSS Selector](https://www.w3.org/TR/annotation-model/#css-selector)
+
+This Selector describes an HTML element in an EPUB resource using the [CSS Selectors Level 3](https://www.w3.org/TR/selectors-3/) syntax.  
+
+It is used to select an image, an audio or video clip or any other element in the DOM that does not correspond to a text fragment. The annotation is therefore contextual to the HTML resource, not directly attached to the media resource.
+
+Note: such construct can be mapped from and to a DOM Range using simple code. See https://www.npmjs.com/package/css-selector-generator for an example of open-source codebase generating CSS Selectors from a Node; For getting a Node from a CSS Selector, developers will use document.querySelector().
+
+Implementation: Thorium Reader 3.1 does not allow the selection of a media resource. This will be added in a future version.
+
+Sample 5: A CSS Selector points at the 5th img in the resource.
+
+```json
+{
+  "selector": [
+    {
+    "type": "CSSSelector",
+    "value": "img:nth-child(5)"
+    }
+  ]
+}
+```
+
 
 ## Create a TextFragmentSelector
 
