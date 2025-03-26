@@ -4,7 +4,7 @@ User annotations convey textual information about a resource segment in a public
 
 This document defines a syntax for Annotation Documents, serialised in JSON and ready for embedding in a packaged publication (especially EPUB), shared as a file or referenced in a [Readium Web Publication Manifest](https://readium.org/webpub-manifest).
 
-This document defines a profile of the [W3C Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) by defining a subset of the properties allowed in this model and adding a few properties. 
+This document defines a profile of the [W3C Web Annotation Data Model](https://www.w3.org/TR/annotation-model/) by specifying a subset of the properties allowed in this model and adding a few properties. 
 
 It is complemented by a [proposal for new Selectors](./Selectors.md); these new Selectors should be discussed in the context of a new version of the W3C Annotation Data Model.  
 
@@ -39,7 +39,7 @@ This document retains the following annotation properties from the W3C Annotatio
 | `type` | The RDF structure type. It MUST be "Annotation". | string | Yes |
 | `motivation` | The motivation for the annotation's creation. Only used for tagging bookmarks. | "bookmarking" | No |
 | `created` | The time when the annotation was created. | ISO 8601 datetime | Yes |
-| `modified` | The time when the annotation was modified, after creation. | ISO 8601 datetime | No |
+| `modified` | The time the annotation was modified after creation. | ISO 8601 datetime | No |
 | `creator` | The creator of the annotation. This may be either a human or an organization. | Creator | No |
 | `target` | The target content of the annotation. | Target | Yes |
 | `body` | The annotation body. | Body | No |
@@ -114,11 +114,11 @@ Sample 2: the source of the annotation is the relative URL identifying an HTML d
 
 #### 1.3.2. Selector
 
-An annotation refers to a segment of a resource, which is identified by one or more Selectors. The nature of the Selectors and methods to describe segments depend on the resource type. Providing more than one Selector allows an annotation software to choose the most accurate selector from those it can handle, and helps accomodating evolutions on the annotated resource. 
+An annotation refers to a segment of a resource, which is identified by one or more Selectors. The nature of the Selectors and methods to describe segments depend on the resource type. Providing more than one Selector allows an annotation software to choose the most accurate selector from those it can handle and helps accommodate evolutions on the annotated resource. 
 
 Annotation selectors are specified in [W3C Annotation Data Model, section Selectors](https://www.w3.org/TR/2017/REC-annotation-model-20170223/#selectors). This specification filters selectors deemed useful for annotating publications and details the use of these selectors. 
 
-Note: New selectors will certainly be defined in the coming months, after discussion with members of the W3C Publishing Maintenance Working Group. 
+Note: New selectors will undoubtedly be defined in the coming months after discussion with members of the W3C Publishing Maintenance Working Group. 
 
 ##### 1.3.2.1. Text Quote Selector
 
@@ -126,11 +126,11 @@ This Selector describes a range of text by copying it, and including some of the
 
 Whitespaces present in the source document are preserved in the “prefix”, “exact”, and “suffix” segments and are represented as per the JSON Grammar (e.g. `\n`, `\t` etc.). 
 
-Note: There is no restriction on the amount of the preceding and following text that can be included in the selector, but this amount should be left as low as possible.
+Note: There is no restriction on the preceding and following text that can be included in the selector, but this amount should be left as low as possible.
 
-Important: This selector contains full annotated text segments and, therefore, must not be used when the publication is protected by a DRM which limits the number of characters that may be copied.   
+Important: This selector contains complete annotated text segments and, therefore, must not be used when the publication is protected by a DRM, which limits the number of characters that may be copied.   
 
-Implementation: This selector is exported from Thorium Reader 3.1 if the publication is in EPUB or Web Publication format, and free from any DRM. 
+Implementation: This selector is exported from Thorium Reader 3.1 if the publication is in EPUB or Web Publication format and free from any DRM. 
 
 Sample 3: A text segment represented as a TextQuoteSelector.
 
@@ -189,7 +189,7 @@ This selects "q" from "quick" as start position and "x" from "fox" as end positi
 
 A ProgressionSelector contains a decimal value representing the annotation's position as a percentage of the total size of the resource.
 
-While such positioning is imprecise and does not propertly identifies a fragment, it is useful as a way to order annotations in a list, and help positioning the annotation near the corresponding fragment if other selectors fail.
+While such positioning is imprecise and does not correctly identify a fragment, it is helpful to order annotations in a list and help position the annotation near the corresponding fragment if other selectors fail.
 
 Sample: This ProgressionSelector indicates that the annotation is positioned just after the middle of the resource:
 
@@ -206,7 +206,7 @@ Sample: This ProgressionSelector indicates that the annotation is positioned jus
 
 #### 1.3.3. Meta
 
-Meta information MAY be added to an annotation as “breadcrumbs”,  to ease the display of contextual information relative to the global position of the annotation in the publication.
+Meta information MAY be added to an annotation as “breadcrumbs”, to ease the display of contextual information relative to the global position of the annotation in the publication.
 
 The meta property contains: 
 
@@ -312,7 +312,7 @@ The Generator object contains information relative to the software from which th
 
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
-| `id` | The identity of the generator software. The recommended value is the Github URL of the application source-code. | URI | Yes |
+| `id` | The identity of the generator software. The recommended value is the GitHub URL of the application source code. | URI | Yes |
 | `type` | The RDF structure type. It MUST be "Software". | string | Yes |
 | `name`| The name of the generator software. | string | Yes |
 | `homepage`| The home page presenting the generator software. | URL | No |
@@ -412,13 +412,13 @@ Sample 10: A Readium Web Publication Manifest containing a link to an annotation
 
 When a Web Publication is packaged using the Readium Packaging Format, it is up to the generator to embed the annotation file in the package or keep it remote.
 
-# 4. Best practices for Reading Systems
+# 4. Best Practices for Reading Systems
 
 _This section is non-normative._ 
 
 ## 4.1. Displaying filtered annotations
 
-Reading systems should enable filtering by colour, highlight mode, keyword and creator. For instance, a user can display "blue" annotations only, or “teacher” annotations only. Filtering on multiple criterias is a plus. 
+Reading systems should enable filtering by colour, highlight mode, keyword and creator. For instance, a user can display "blue" annotations only or “teacher” annotations only. Filtering on multiple criteria is a plus. 
 
 ## 4.2. Using multiple selectors
 
@@ -428,25 +428,25 @@ When displaying an annotation, a Reading System is free to use the most precise 
 
 ## 4.3. Exporting annotations as a detached file
 
-When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by keywords (multiple choice). “Annotations with no keyword” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually with no keyword) and let “teacher” annotations unexported. 
+When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by keywords (multiple choice). “Annotations with no keyword” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually with no keyword) and leave “teacher” annotations unexported. 
 
-He MAY enter a title for the annotation set (empty by default). Such title SHOULD become the exported filename.  
+He MAY enter a title for the annotation set (empty by default). Such a title SHOULD become the exported filename.  
 
-He MUST be proposed to choose the directory in which the annotation set will be stored. 
+He MUST be able to choose the directory in which the annotation set will be stored. 
 
-The file extention of the file MUST be `.ann`. 
+The file extension MUST be `.ann`. 
 
-The application may propose alternative formats at export time: a HTML or markdown format may be handy, as a list of annotations with human-friendly references to the location of each annotation. 
+The application may propose alternative formats at export time: an HTML or markdown format may be handy as a list of annotations with human-friendly references to the location of each annotation. 
 
 ## 4.4. Exporting annotations in a publication
 
 When a user decides to export a publication from the Reading System, he SHOULD be proposed to embed the annotations associated with the publication. 
 
-If the user decides to embed annotations in a publication, he SHOULD be be proposed to filter the annotations by keywords (multiple choice).
+If the user decides to embed annotations in a publication, he SHOULD be proposed to filter the annotations by keywords (multiple choice).
 
 ## 4.5. Importing annotations
 
-To simplify the association of annotations with a publication, a Reading System MUST offer a way to select a publication before selecting an annotation set. The drag&drop of an annotation set into a Reading System MAY also be proposed, but identifying the proper publication from the metadata in the annotation set is more complicated.
+To simplify the association of annotations with a publication, a Reading System MUST offer a way to select a publication before selecting an annotation set. The drag and drop of an annotation set into a Reading System MAY also be proposed, but identifying the proper publication from the metadata in the annotation set is more complicated.
 
 When importing an annotation set, a Reading System SHOULD display a message with the title of the annotation set and the number of annotations in the set. The Reading System MUST offer the user the choice to abort the import.
 
@@ -454,13 +454,13 @@ Each annotation is uniquely identified. If during the import of an annotation se
 
 ## 4.6. Dealing with colours
 
-This document specifies a closed set of six colours, chosen because of their large support in well-known reading systems. But most existing reading apps offer a smaller set to their users.
+This document specifies a closed set of six colours chosen because of their extensive support in well-known reading systems. However, most existing reading apps offer a smaller set to their users.
 
-If an application imports annotations with a colour it does not support, it should display these annotations with a neutral colour. The recommended neutral colour is grey.
+If an application imports annotations with a colour it does not support, it should display them with a neutral colour. The recommended neutral colour is grey.
 
-Some applications may support colours that are not in the set defined by this specification (e.g. brown). In this case, a 1-to-1 substitution at export time is required (e.g. brown to orange). 
+Some applications may support colours not in the set defined by this specification (e.g. brown). In this case, a 1-to-1 substitution at export time is required (e.g. brown to orange). 
 
-Note: we didn't spot applications which offer more than six annotation colours.
+Note: we didn't spot applications with more than six annotation colours.
 
 # 5. JSON Schemas
 
