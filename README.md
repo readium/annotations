@@ -261,7 +261,7 @@ The body property contains:
 | ---- | ----------- | ------ | --------- |
 | `type`| The body type. It MUST be “TextualBody”. | string | Yes |
 | `value`| The textual content of the annotation. | string | Yes |
-| `format`| The media-type of the annotation value; 'plain/text' by default. | rfc6838 | No |
+| `format`| The media-type of the annotation value; 'text/plain' by default; 'text/markdown' is recommended. | rfc6838, rfc7763 | No |
 | `color`| The colour of the annotation; yellow by default. | "pink" \| "orange" \| "yellow" \| "green" \| "blue" \| "purple" | No |
 | `highlight`| The style of the annotation; solid background by default. | "solid" \| "underline" \| "strikethrough" \| "outline" | No |
 | `language`| The language of the annotation. | BCP47 | No |
