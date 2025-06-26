@@ -52,7 +52,7 @@ Sample 5: A CSS Selector points at the 5th img in the resource.
 {
   "selector": [
     {
-    "type": "CSSSelector",
+    "type": "CssSelector",
     "value": "img:nth-child(5)"
     }
   ]
@@ -145,9 +145,9 @@ Sample: An audio fragment identified by a Temporal Selector.
 
 Using these two Selectors, it is possible to obtain an optimized mapping between annotation selectors and DOM ranges while using the elegant but verbose `refinedBy` mechanism offered by the W3C Annotation Data Model.
 
-A RangeSelector identifies the beginning and the end of the selection by using other Selectors. It contains two CSSSelectors. Each CSSSelector references the parent element of the text node containing the annotation start or end character. Each CSSSelector is refined by a TextNodeIndexSelector which points at a specific text node in the parent element and a CodeUnitSelector that targets a character in this text node, using unicode code units.
+A RangeSelector identifies the beginning and the end of the selection by using other Selectors. It contains two CssSelectors. Each CssSelector references the parent element of the text node containing the annotation start or end character. Each CssSelector is refined by a TextNodeIndexSelector which points at a specific text node in the parent element and a CodeUnitSelector that targets a character in this text node, using unicode code units.
 
-Question: If EPUB CFIs are correctly implemented in EPUB, and CSSSelector + TextPositionSelector sufficiently efficient, is this form really useful?   
+Question: If EPUB CFIs are correctly implemented in EPUB, and CssSelector + TextPositionSelector sufficiently efficient, is this form really useful?   
 
 Sample: A text segment represented using a RangeSelector and a cascade of CssSelector, TextNodeIndexSelector and CodeUnitSelector; note that the start and end selectors are not at the same level in the DOM tree:
 
@@ -205,7 +205,7 @@ Sample: a more verbose but equivalent selector for the previous HTML snippet.
     {
       "type": "RangeSelector",	 
       "startSelector": {
-        "type": "CSSSelector",
+        "type": "CssSelector",
         "value": "#intro > p:nth-child(2)",
         "refinedBy": {
           "type": "XPathSelector",	 
@@ -218,7 +218,7 @@ Sample: a more verbose but equivalent selector for the previous HTML snippet.
         },
       },
       "endSelector": {
-        "type": "CSSSelector",
+        "type": "CssSelector",
         "value": "#intro > p:nth-child(3) > em",
         "refinedBy": {
           "type": "FragmentSelector",	 

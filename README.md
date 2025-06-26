@@ -147,7 +147,7 @@ Sample 3: A text segment represented as a TextQuoteSelector.
 }
 ```
 
-##### 1.3.2.2. CSSSelector + TextPositionSelector
+##### 1.3.2.2. CssSelector + TextPositionSelector
 
 References in the W3C Annotation Data Model: [CSS Selector](https://www.w3.org/TR/annotation-model/#css-selector), [Text Position Selector](https://www.w3.org/TR/annotation-model/#text-position-selector), [Refinement of Selection](https://www.w3.org/TR/annotation-model/#refinement-of-selection)
 
@@ -163,7 +163,7 @@ Sample 6: A CSS Selector refined by a Text Position Selector:
 {
   "selector": [
     {
-      "type": "CSSSelector",
+      "type": "CssSelector",
       "value": "#intro > p:nth-child(2)",
       "refinedBy": {
         "type": "TextPositionSelector",	 
@@ -422,7 +422,7 @@ Reading systems should enable filtering by colour, highlight mode, keyword and c
 
 ## 4.2. Using multiple selectors
 
-It is recommended that Reading Systems export CSSSelector + TextPositionSelector + ProgressionSelector, as they can be used for sorting annotations when no other sortable selector is present.
+It is recommended that Reading Systems export CssSelector + TextPositionSelector + ProgressionSelector, as they can be used for sorting annotations when no other sortable selector is present.
 
 When displaying an annotation, a Reading System is free to use the most precise Selector available. It will select an alternative Selector as a fallback in case the preferred one does not return a correct position in the publication: this can happen if the publication has been modified after the annotation has been created. 
 
