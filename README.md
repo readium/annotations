@@ -37,14 +37,12 @@ This document retains the following annotation properties from the W3C Annotatio
 | `@context`| The context that determines the meaning of the JSON as an Annotation. It MUST be “http://www.w3.org/ns/anno.jsonld”. | string | Yes |
 | `id` | The identity of the annotation. A uuid formatted as a URN is recommended. | URI | Yes |
 | `type` | The RDF structure type. It MUST be "Annotation". | string | Yes |
-| `motivation` | The motivation for the annotation's creation. Only used for tagging bookmarks. | "bookmarking" | No |
+| `motivation` | The motivation for the annotation's creation. | "bookmarking", "hightlighting" or "commenting"  | No |
 | `created` | The time when the annotation was created. | ISO 8601 datetime | Yes |
 | `modified` | The time the annotation was modified after creation. | ISO 8601 datetime | No |
 | `creator` | The creator of the annotation. This may be either a human or an organization. | Creator | No |
 | `target` | The target content of the annotation. | Target | Yes |
 | `body` | The annotation body. | Body | No |
-
-An annotation without Body structure can correspond to a "highlight" or a "bookmark". A bookmark is specified by the inclusion of a `motivation` property with `bookmarking` as a value.  
 
 Sample 1: Core structure of a Readium annotation
 
@@ -61,8 +59,11 @@ Sample 1: Core structure of a Readium annotation
   }
 }
 ```
+### 1.2. Motivation
 
-### 1.2. Creator
+An annotation with a Body structure corresponds to a "comment". An annotation without Body structure corresponds to a "highlight" if its Selector defines a range of characters, a space in an image or a time period, and a "bookmark" if it does not.  
+
+### 1.3. Creator
 
 The creator of an annotation is a person or an organisation. 
 
@@ -74,7 +75,7 @@ This document defines the following creator properties:
 | `type` | The RDF structure type. It MUST be "Person" or "Organization". | string | Yes |
 | `name`| The name of the creator.  | string | No |
 
-### 1.3. Target
+### 1.4. Target
 
 The target of an annotation associates the annotation to a specific segment of a resource in the current publication. 
 
@@ -88,7 +89,7 @@ This document defines three target sub-properties:
 
 A Target with no Selector indicates that the annotation is targeting the entire target resource. 
 
-#### 1.3.1. Source 
+#### 1.4.1. Source 
 
 The target resource MUST be identified by the URL of an existing resource in the publication.
 
@@ -112,7 +113,7 @@ Sample 2: the source of the annotation is the relative URL identifying an HTML d
 }
 ```
 
-#### 1.3.2. Selector
+#### 1.4.2. Selector
 
 An annotation refers to a segment of a resource, which is identified by one or more Selectors. The nature of the Selectors and methods to describe segments depend on the resource type. Providing more than one Selector allows an annotation software to choose the most accurate selector from those it can handle and helps accommodate evolutions on the annotated resource. 
 
@@ -120,7 +121,7 @@ Annotation selectors are specified in [W3C Annotation Data Model, section Select
 
 Note: New selectors will undoubtedly be defined in the coming months after discussion with members of the W3C Publishing Maintenance Working Group. 
 
-##### 1.3.2.1. Text Quote Selector
+##### 1.4.2.1. Text Quote Selector
 
 This Selector describes a range of text by copying it, and including some of the text immediately before (a prefix) and after (a suffix) it to distinguish between multiple copies of the same sequence of characters.
 
@@ -147,7 +148,7 @@ Sample 3: A text segment represented as a TextQuoteSelector.
 }
 ```
 
-##### 1.3.2.2. CssSelector + TextPositionSelector
+##### 1.4.2.2. CssSelector + TextPositionSelector
 
 References in the W3C Annotation Data Model: [CSS Selector](https://www.w3.org/TR/annotation-model/#css-selector), [Text Position Selector](https://www.w3.org/TR/annotation-model/#text-position-selector), [Refinement of Selection](https://www.w3.org/TR/annotation-model/#refinement-of-selection)
 
@@ -157,7 +158,7 @@ In an HTML resource, rebuilding a DOM range from a purely textual range using tr
 
 Implementation: This selector is exported from and processed by Thorium Reader 3.1 if the publication is in EPUB or Web Publication format. 
 
-Sample 6: A CSS Selector refined by a Text Position Selector:
+Sample 4: A CSS Selector refined by a Text Position Selector:
 
 ```json
 {
@@ -185,13 +186,13 @@ This selects "q" from "quick" as start position and "x" from "fox" as end positi
 </div>
 ```
 
-##### 1.3.2.3. ProgressionSelector
+##### 1.4.2.3. ProgressionSelector
 
 A ProgressionSelector contains a decimal value representing the annotation's position as a percentage of the total size of the resource.
 
 While such positioning is imprecise and does not correctly identify a fragment, it is helpful to order annotations in a list and help position the annotation near the corresponding fragment if other selectors fail.
 
-Sample: This ProgressionSelector indicates that the annotation is positioned just after the middle of the resource:
+Sample 5: This ProgressionSelector indicates that the annotation is positioned just after the middle of the resource:
 
 ```json
 {
@@ -204,7 +205,7 @@ Sample: This ProgressionSelector indicates that the annotation is positioned jus
 }
 ```
 
-#### 1.3.3. Meta
+#### 1.4.3. Meta
 
 Meta information MAY be added to an annotation as “breadcrumbs”, to ease the display of contextual information relative to the global position of the annotation in the publication.
 
@@ -215,7 +216,7 @@ The meta property contains:
 | `headings`| Ancestor headings of the annotation. | Array of Heading objects | No |
 | `page`| Page of the publication containing the annotation. It may be either a synthetic page or a print equivalent. It is essentially a visual indicator. | string | No |
 
-##### 1.3.3.1. Headings
+##### 1.4.3.1. Headings
 
 The Headings object contains:
 
@@ -224,7 +225,7 @@ The Headings object contains:
 | `level`| Heading level. | number | No |
 | `txt`| Heading title. | string | No |
 
-Sample 7: Meta information contains ancestor headings and a page number:
+Sample 6: Meta information contains ancestor headings and a page number:
 
 ```json
 {
@@ -251,7 +252,7 @@ Sample 7: Meta information contains ancestor headings and a page number:
 }
 ```
 
-### 1.4. Body
+### 1.5. Body
 
 The body of an annotation contains plain text, style, and an optional keyword. 
 
@@ -270,7 +271,7 @@ The body property contains:
 
 Note: read “Best practices for Reading Systems” about using a keyword in an annotation. 
 
-Sample 8: An annotation Body. 
+Sample 7: An annotation Body. 
 
 ```json
 {
@@ -319,7 +320,7 @@ The Generator object contains information relative to the software from which th
 
 ### 2.2. About
 
-The About object contains information relative to the publication. Such metadata in intended to help associating an annotation set with a publication: 
+The About object contains information relative to the publication. Such metadata in intended to help associate an annotation set with a publication: 
 
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
@@ -332,7 +333,7 @@ The About object contains information relative to the publication. Such metadata
 
 Note: all properties defined above are from the Dublin Core vocabulary, referenced in the Web Annotation Data Model. 
 
-Sample 9: An AnnotationSet containing one annotation. 
+Sample 8: An AnnotationSet containing one annotation. 
 
 ```json
 {
@@ -376,19 +377,19 @@ Note: I propose using a “rd-” prefix (for ReaDium). It would allow for easie
 
 ### 2.4. File extension of an Annotation Set
 
-This specification introduces a dedicated file extension for serialized AnnotationSets: `.ann`.  
+This specification introduces a dedicated file extension for serialized AnnotationSets: `.annotation`.  
 
 # 3. Embedding annotations in publications
 
 ## 3.1. In EPUB
 
-The OPTIONAL `annotations.ann` file in the META-INF directory holds an AnnotationSet. 
+The OPTIONAL `annotations.annotation` file in the META-INF directory holds an AnnotationSet. 
 
 ## 3.2. In Readium Web Publications
 
 The JSON file holding an AnnotationSet MUST be represented as a link object in the `links` collection, with an `annotations` relation. 
 
-Sample 10: A Readium Web Publication Manifest containing a link to an annotations file.
+Sample 9: A Readium Web Publication Manifest containing a link to an annotation set.
 
 ```json
 {
@@ -418,7 +419,7 @@ _This section is non-normative._
 
 ## 4.1. Displaying filtered annotations
 
-Reading systems should enable filtering by colour, highlight mode, keyword and creator. For instance, a user can display "blue" annotations only or “teacher” annotations only. Filtering on multiple criteria is a plus. 
+Reading systems should enable filtering by motivation, colour, highlight mode, keyword and creator. For instance, a user can display "blue" annotations only or “teacher” (as a keyword) annotations only. Filtering on multiple criteria is a plus. 
 
 ## 4.2. Using multiple selectors
 
@@ -430,13 +431,13 @@ When displaying an annotation, a Reading System is free to use the most precise 
 
 When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by keywords (multiple choice). “Annotations with no keyword” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually with no keyword) and leave “teacher” annotations unexported. 
 
-He MAY enter a title for the annotation set (empty by default). Such a title SHOULD become the exported filename.  
+They MAY enter a title for the annotation set (empty by default). Such a title SHOULD become the exported filename.  
 
-He MUST be able to choose the directory in which the annotation set will be stored. 
+They MUST be able to choose the directory in which the annotation set will be stored. 
 
-The file extension MUST be `.ann`. 
+The file extension MUST be `.annotation`. 
 
-The application may propose alternative formats at export time: an HTML or markdown format may be handy as a list of annotations with human-friendly references to the location of each annotation. 
+The application may propose alternative formats at export time: an HTML or markdown format with human-friendly references to the location of each annotation may be handy. 
 
 ## 4.4. Exporting annotations in a publication
 
