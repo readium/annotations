@@ -214,7 +214,7 @@ The meta property contains:
 | Name | Description | Format | Required? |
 | ---- | ----------- | ------ | --------- |
 | `headings`| Ancestor headings of the annotation. | Array of Heading objects | No |
-| `page`| Page of the publication containing the annotation. It may be either a synthetic page or a print equivalent. It is essentially a visual indicator. | string | No |
+| `page`| Page of the publication containing the annotation. It may be either a synthetic page or a print equivalent. It is essentially a visual indicator, but useful for citations. | string | No |
 
 ##### 1.4.3.1. Headings
 
@@ -254,7 +254,7 @@ Sample 6: Meta information contains ancestor headings and a page number:
 
 ### 1.5. Body
 
-The body of an annotation contains plain text, style, and an optional keyword. 
+The body of an annotation contains plain text, style, and optional tags. 
 
 The body property contains: 
 
@@ -267,9 +267,9 @@ The body property contains:
 | `highlight`| The style of the annotation; solid background by default. | "solid" \| "underline" \| "strikethrough" \| "outline" | No |
 | `language`| The language of the annotation. | BCP47 | No |
 | `textDirection`| The direction of the text; left-to-right by default. | "ltr" \| "rtl" | No |
-| `keyword`| Free text categorising the annotation. | string | No |
+| `tags`| Free text categorising the annotation. | Array of string s| No |
 
-Note: read “Best practices for Reading Systems” about using a keyword in an annotation. 
+Note: read “Best practices for Reading Systems” about using tags in an annotation. 
 
 Sample 7: An annotation Body. 
 
@@ -280,7 +280,7 @@ Sample 7: An annotation Body.
   "body": {
     "type" : "TextualBody",
     "value" : "j'adore !",
-    "keyword" : "teacher",   
+    "tags" : ["teacher"],   
     "color" : "blue",
     "language" : "fr",
     "textDirection" : "ltr"
@@ -419,7 +419,7 @@ _This section is non-normative._
 
 ## 4.1. Displaying filtered annotations
 
-Reading systems should enable filtering by motivation, colour, highlight mode, keyword and creator. For instance, a user can display "blue" annotations only or “teacher” (as a keyword) annotations only. Filtering on multiple criteria is a plus. 
+Reading systems should enable filtering by motivation, colour, highlight mode, tag and creator. For instance, a user can display "blue" annotations only or “teacher” (as a tag) annotations only. Filtering on multiple criteria is a plus. 
 
 ## 4.2. Using multiple selectors
 
@@ -429,7 +429,7 @@ When displaying an annotation, a Reading System is free to use the most precise 
 
 ## 4.3. Exporting annotations as a detached file
 
-When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by keywords (multiple choice). “Annotations with no keyword” and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually with no keyword) and leave “teacher” annotations unexported. 
+When a user decides to export an annotation set from a reading system, he SHOULD be proposed to filter the annotations by tags (multiple choice). “Annotations with no tag and “All annotations” SHOULD be proposed as options. The advantage of this practice is that, for instance, a user can export personal annotations (usually with no tag) and leave “teacher” annotations unexported. 
 
 They MAY enter a title for the annotation set (empty by default). Such a title SHOULD become the exported filename.  
 
@@ -443,7 +443,7 @@ The application may propose alternative formats at export time: an HTML or markd
 
 When a user decides to export a publication from the Reading System, he SHOULD be proposed to embed the annotations associated with the publication. 
 
-If the user decides to embed annotations in a publication, he SHOULD be proposed to filter the annotations by keywords (multiple choice).
+If the user decides to embed annotations in a publication, he SHOULD be proposed to filter the annotations by tags (multiple choice).
 
 ## 4.5. Importing annotations
 
