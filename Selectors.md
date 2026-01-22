@@ -64,11 +64,11 @@ Sample 5: A CSS Selector points at the 5th img in the resource.
 
 There is a trend in Web browsers to highlight text using a url-compliant and short fragment identifier. 
 
-Warning: mapping a text fragment to a DOM Range is still uneasy, bacause of a lack of standard API in web browsers.   
-
 A TextFragmenSelector contains a shortened version of the annotated text segment and optional indication of the preceding and following fragments.
 
-TextFragmenSelector could be defined as a FragmentSelector conforming to the W3C Draft Community Group report named [URL Fragment Text Directives](https://wicg.github.io/scroll-to-text-fragment/). We prefer defining a dedicated Selector for the purpose, which simplifies the writing and processing of the structure. 
+The syntax is a simplified version of the syntaxt defined in the W3C Draft Community Group report named [URL Fragment Text Directives](https://wicg.github.io/scroll-to-text-fragment/). Percent-encoding is not necessary in our implementation.
+
+Warning: mapping a text fragment to a DOM Range is still challenging, because of a lack of standard API in web browsers.   
 
 Sample: A text segment represented as a TextFragmentSelector.
 
@@ -77,7 +77,7 @@ Sample: A text segment represented as a TextFragmentSelector.
   "selector": [
     {
     "type": "TextFragmentSelector",	 
-    "value": "an%20example,text%20fragment"
+    "value": "an example,text fragment"
     }
   ]
 }
