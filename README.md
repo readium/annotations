@@ -185,8 +185,49 @@ This selects "q" from "quick" as start position and "x" from "fox" as end positi
   <p>The lazy <em>white</em> dog sleeps with the crazy fox.</p>
 </div>
 ```
+### 1.4.2.3. EPUBCFISelector
 
-##### 1.4.2.3. ProgressionSelector
+This Selector describes a range of text in an EPUB resource by expressing a starting and ending character using the [EPUB Canonical Fragment Identifier](http://www.idpf.org/epub/linking/cfi/epub-cfi.html) syntax. 
+
+The EPUBCFISelector replaces the FragmentSelector conforming to http://www.idpf.org/epub/linking/cfi/epub-cfi.html, as defined in the W3C Web Annotations Data Model. The "epubcfi()" expression, which has no use, is removed from the selector value; same for the left part of the CFI, which relates to the resource already selected by the "source" property of the annotation.
+
+To correspond to a text segment, the EPUB CFI expression MUST correspond to a range in the form epubcfi(P,S,E), where P represents a common Parent path, S and E the start and end subpaths respectively. 
+
+Important: Current implementations are not fully interoperable, essentially because some implementations use unicode code points instead of code units. Our implementation assumes the use of code units.
+
+Sample: a text fragment identified by an EPUB CFI Selector.
+
+```json
+{
+  "selector": [
+    {
+    "type": "EPUBCFISelector",	 
+    "value": "/4[body01]/10[para05],/2/1:1,/3:4"
+    }
+  ]
+}
+```
+
+A FragmentSelector conforming to http://www.idpf.org/epub/linking/cfi/epub-cfi.html, as defined in the W3C Web Annotations Data Model, is also exported in Thorium Reader 3.1 to 3.4. It is removed from the export in Thorium Reader 3.5 and above. 
+
+Reference in the W3C Annotation Data Model: [EPUB CFI Selector](https://www.w3.org/TR/annotation-model/#fragment-selector)
+
+Sample: A text segment represented as an EPUB CFI:
+
+```json
+{
+  "selector": [
+    {
+    "type": "FragmentSelector",	 
+    "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+    "value": "epubcfi(/6/4!/4[body01]/10[para05],/2/1:1,/3:4)"
+    }
+  ]
+}
+```
+
+
+##### 1.4.2.4. ProgressionSelector
 
 A ProgressionSelector contains a decimal value representing the annotation's position as a percentage of the total size of the resource.
 

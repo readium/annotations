@@ -4,36 +4,6 @@ This document details proposals for an evolution of the specification of selecto
 
 It complements the [Readium Annotations specification](./README.md), which so far introduces serializations totally compatible with the W3C Annotation Data Model (plus a Thorium experiment).
 
-## Use the EPUB CFI Selector? 
-
-Reference in the W3C Annotation Data Model: [EPUB CFI Selector](https://www.w3.org/TR/annotation-model/#fragment-selector)
-
-This Selector describes a range of text in an EPUB resource by expressing a starting and ending character using the [EPUB Canonical Frangment Identifier](http://www.idpf.org/epub/linking/cfi/epub-cfi.html) syntax.  
-
-To correspond to a text segment, the EPUB CFI expression MUST correspond to a range in the form epubcfi(P,S,E), where P represents a common Parent path, S and E the start and end subpaths respectively. 
-
-Note: Both the left-hand part (resource location in the publication) and the right-hand part (anchoring of the text fragment) of the path must be present.
-
-Important: The reading system community lacks a reference and open-source implementation of EPUB CFI to DOM Range conversion (back and forth). Current implementations are not fully interoperable, essentially because some implementations use unicode code points instead of code units. Our implementation assumes the use of code units.
-
-Implementation: This selector is exported from and processed by Thorium Reader 3.1 when the publication is in EPUB format. 
-
-Sample 4: A text segment represented as an EPUB CFI:
-
-```json
-{
-  "selector": [
-    {
-    "type": "FragmentSelector",	 
-    "conformsTo": "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-    "value": "epubcfi(/6/4!/4[body01]/10[para05],/2/1:1,/3:4)"
-    }
-  ]
-}
-```
-
-Note: It would be more efficient to create a simpler EPUBCFISelector, as an equivalent of the FragmentSelector conforming to http://www.idpf.org/epub/linking/cfi/epub-cfi.html defined in the W3C Annotation Model, which would avoid expressing the "epubcfi()" part and the left part of the CFI which relates to the resource already selected by the "source" property of the annotation. See below. 
-
 ## Use the CSS Selector
 
 Reference in the W3C Annotation Data Model: [CSS Selector](https://www.w3.org/TR/annotation-model/#css-selector)
@@ -85,22 +55,6 @@ Sample: A text segment represented as a TextFragmentSelector.
 
 ## Replace the generic FragmentSelector by a set of specific selectors
 
-### EPUBCFISelector
-
-The EPUBCFISelector replaces the FragmentSelector conforming to http://www.idpf.org/epub/linking/cfi/epub-cfi.html. The "epubcfi()" expression, which has no use, is removed from the selector value; same for the left part of the CFI, which relates to the resource already selected by the "source" property of the annotation.
-
-Sample: a text fragment identified by an EPUB CFI Selector.
-
-```json
-{
-  "selector": [
-    {
-    "type": "EPUBCFISelector",	 
-    "value": "/4[body01]/10[para05],/2/1:1,/3:4"
-    }
-  ]
-}
-```
 
 ### SpatialSelector
 
