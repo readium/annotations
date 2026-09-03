@@ -185,7 +185,8 @@ This selects "q" from "quick" as start position and "x" from "fox" as end positi
   <p>The lazy <em>white</em> dog sleeps with the crazy fox.</p>
 </div>
 ```
-### 1.4.2.3. EPUBCFISelector
+
+##### 1.4.2.3. EPUBCFISelector
 
 This Selector describes a range of text in an EPUB resource by expressing a starting and ending character using the [EPUB Canonical Fragment Identifier](http://www.idpf.org/epub/linking/cfi/epub-cfi.html) syntax. 
 
